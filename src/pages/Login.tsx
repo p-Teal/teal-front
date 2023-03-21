@@ -1,11 +1,14 @@
 import LoginInput from "../components/LoginInput";
 import PasswordInput from "../components/PasswordInput";
-import { SignIn } from "@phosphor-icons/react";
+import { GithubLogo, Link, SignIn } from "@phosphor-icons/react";
 
 export default function Login () {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="rounded hover:shadow-xl bg-white p-8 my-20 max-w-sm border-y-4 border-teal-500">
+      <div className="rounded hover:shadow-xl bg-white p-8 mt-14 max-w-sm border-y-4 border-teal-500">
+        <div className="w-full mb-8">
+          <img src="/src/assets/Logo.svg" alt="Logo" className="mx-auto" />
+        </div>
         <h1 className="text-4xl text-center mb-8 text-slate-700">Login</h1>
         <form className="flex flex-col">
           <LoginInput />
@@ -18,6 +21,10 @@ export default function Login () {
         <div className="text-right">
           <a href="#" className="text-slate-500 hover:text-slate-700 text-sm">Cadastre-se como voluntário</a>
         </div>
+      </div>
+      <div className="mb-9 mt-5 flex flex-row">
+        <GithubLogo size={32} color="#334155" className="cursor-pointer mr-2"/>
+        <Link size={32} color="#334155" className="cursor-pointer ml-2"/>
       </div>
     </div>
   )
