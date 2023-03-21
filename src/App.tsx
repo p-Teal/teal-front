@@ -5,8 +5,8 @@ function App() {
   
 
   return (
-    <Login />
-    // <CadastroVoluntario />
+    // <Login />
+    <CadastroVoluntario />
   )
 }
 
