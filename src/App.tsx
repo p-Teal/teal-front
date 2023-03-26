@@ -16,8 +16,10 @@ function App() {
             <Route path="voluntarios" element={<h1>voluntarios</h1>} />
             <Route path="animais" element={<h1>animais</h1>} />
             <Route path="adocoes" element={<h1>adocoes</h1>} />
-            <Route path="adotantes" element={<h1>adotantes</h1>} />
+            <Route path="tutores" element={<h1>adotantes</h1>} />
             <Route path="sobre" element={<h1>sobre</h1>} />
+            <Route path="perfil" element={<h1>perfil</h1>} />
+            <Route path="estoque" element={<h1>estoque</h1>} />
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroVoluntario />} />

@@ -1,6 +1,7 @@
 import LoginInput from "../components/LoginInput";
 import PasswordInput from "../components/PasswordInput";
 import { GithubLogo, Link, SignIn } from "@phosphor-icons/react";
+import { NavLink } from "react-router-dom";
 
 export default function Login () {
   return (
@@ -18,9 +19,9 @@ export default function Login () {
             Acessar
           </button>
         </form>
-        <div className="text-right">
-          <a href="#" className="text-slate-500 hover:text-slate-700 text-sm">Cadastre-se como voluntário</a>
-        </div>
+        <NavLink to="/cadastro" className="text-right">
+          <p className="text-slate-500 hover:text-slate-700 text-sm">Cadastre-se como voluntário</p>
+        </NavLink>
       </div>
       <div className="mb-9 mt-5 flex flex-row">
         <GithubLogo size={32} color="#334155" className="cursor-pointer mr-2"/>
