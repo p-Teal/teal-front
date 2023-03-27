@@ -24,7 +24,14 @@ export default function CadastroVoluntario() {
     shouldFocusError: true,
   })
 
-  const handleForm = async (data: FormProps) => {
+  const handleErrorInputRing = (message?: string): string => {
+    if (message) {
+      return "border-2 border-red-500 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent";
+    }
+    return "border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent";
+  }
+
+  const handleFormSubmit = async (data: FormProps) => {
     const response = await cadastrarVoluntario({
       nome: data.nome,
       cpf: data.cpf,
@@ -32,10 +39,16 @@ export default function CadastroVoluntario() {
     });
 
     if (response.status === 201) {
-      toast.success("Cadastro realizado com sucesso!");
+      console.log(response.data);
+      const { admin } = response.data.voluntario;
+      if (admin) {
+        toast.success("Administrador cadastrado com sucesso! Redirecionando...");
+      } else {
+        toast.success("Voluntário cadastrado com sucesso! Redirecionando...");
+      }
       setTimeout(() => {
         nav('/login');
-      }, 2000);
+      }, 2500);
       reset();
       return;
     }
@@ -50,23 +63,23 @@ export default function CadastroVoluntario() {
           <img src="/src/assets/Logo.svg" alt="Logo" className="mx-auto" />
         </div>
         <h1 className="text-4xl text-center mb-8 text-slate-700">Cadastrar Voluntário</h1>
-        <form className="flex flex-col" onSubmit={handleSubmit(handleForm)}>
+        <form className="flex flex-col" onSubmit={handleSubmit(handleFormSubmit)}>
 
           <div className="flex flex-col py-1 h-fit">
             <input type="text" autoComplete="off" placeholder="Nome Completo" {...register("nome")}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+              className={handleErrorInputRing(errors.nome?.message)} />
             <span className="text-red-500 text-sm h-5 pl-3 pt-1">{errors.nome?.message}</span>
           </div>
 
           <div className="flex flex-col py-1 h-fit">
             <input type="text" autoComplete="off" placeholder="CPF" {...register("cpf")}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+              className={handleErrorInputRing(errors.cpf?.message)} />
             <span className="text-red-500 text-sm h-5 pl-3 pt-1">{errors.cpf?.message}</span>
           </div>
 
           <div className="flex flex-col py-1 h-fit">
             <input type="password" autoComplete="off" placeholder="Senha" {...register("senha")}
-              className="border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" />
+              className={handleErrorInputRing(errors.senha?.message)} />
             <span className="text-red-500 text-sm h-5 pl-3 pt-1">{errors.senha?.message}</span>
           </div>
 
