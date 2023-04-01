@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginVoluntario } from "../services/voluntario";
+import { loginVoluntario } from "../services/voluntarioService";
 import { toast } from "react-toastify";
 import { useAppContext } from "../context/appContext";
 import { useEffect } from "react";
@@ -22,14 +22,12 @@ const schema = z.object({
 type FormProps = z.infer<typeof schema>;
 
 export default function Login() {
-  const { dispatch, voluntarioId } = useAppContext();
+  const { dispatch, voluntarioId, startLoadingApp } = useAppContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (voluntarioId) {
-      setTimeout(() => {
-        navigate("/");
-      }, 3500);
+      navigate("/");
     }
   }, [voluntarioId, navigate]);
 
@@ -45,6 +43,7 @@ export default function Login() {
   });
 
   const handleFormSubmit = async (data: FormProps) => {
+    startLoadingApp();
     const response = await loginVoluntario({
       cpf: data.login,
       senha: data.senha,
@@ -53,23 +52,31 @@ export default function Login() {
       toast.success("Login realizado com sucesso! Redirecionando...");
       reset();
       const { admin, _id, nome, cpf } = response.data.voluntario;
-      dispatch({
-        type: "SET_VOLUNTARIO",
-        payload: {
-          admin,
-          voluntarioId: _id,
-          voluntarioNome: nome,
-          voluntarioCpf: cpf,
-        },
-      });
-      return;
-    } else if (response.status === 401) {
-      toast.error(`Erro! ${response.data.mensagem}`);
-      reset();
+      setTimeout(() => {
+        dispatch({
+          type: "SET_VOLUNTARIO",
+          payload: {
+            admin,
+            voluntarioId: _id,
+            voluntarioNome: nome,
+            voluntarioCpf: cpf,
+          },
+        });
+        navigate("/");
+      }, 2500);
       return;
     } else {
       toast.error(`Erro! ${response.data.mensagem}`);
       reset();
+      dispatch({
+        type: "SET_VOLUNTARIO",
+        payload: {
+          admin: false,
+          voluntarioId: "",
+          voluntarioNome: "",
+          voluntarioCpf: "",
+        },
+      });
       return;
     }
   };

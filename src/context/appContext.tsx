@@ -1,5 +1,5 @@
 import React, { useEffect, createContext } from "react";
-import { getVoluntario } from "../services/voluntario";
+import { getVoluntario, logout } from "../services/voluntarioService";
 import { appReducer } from "./appReducer";
 
 export interface IInitialState {
@@ -7,6 +7,7 @@ export interface IInitialState {
   voluntarioNome: string;
   voluntarioCpf: string;
   admin: boolean;
+  loadingApp: boolean;
 }
 
 const initialState: IInitialState = {
@@ -14,6 +15,7 @@ const initialState: IInitialState = {
   voluntarioNome: "",
   voluntarioCpf: "",
   admin: false,
+  loadingApp: true,
 };
 
 export const AppContext = createContext<any | undefined>(undefined);
@@ -25,7 +27,14 @@ type AppProps = {
 const AppProvider = ({ children }: AppProps) => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);
 
+  const startLoadingApp = () => {
+    dispatch({
+      type: "START",
+    });
+  };
+
   const getVoluntarioAndSet = async () => {
+    startLoadingApp();
     const response = await getVoluntario();
 
     if (response.status === 200) {
@@ -40,9 +49,28 @@ const AppProvider = ({ children }: AppProps) => {
         },
       });
     } else {
-      console.log(response);
+      dispatch({
+        type: "SET_VOLUNTARIO",
+        payload: {
+          admin: false,
+          voluntarioId: "",
+          voluntarioNome: "",
+          voluntarioCpf: "",
+        },
+      });
       if (response.status === 401) return;
     }
+  };
+
+  const logoutContext = () => {
+    try {
+      logout();
+    } catch (error) {
+      console.log(error);
+    }
+    dispatch({
+      type: "LOGOUT"
+    });
   };
 
   useEffect(() => {
@@ -50,7 +78,7 @@ const AppProvider = ({ children }: AppProps) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ ...(state as IInitialState), dispatch }}>
+    <AppContext.Provider value={{ ...(state as IInitialState), dispatch, startLoadingApp, logoutContext }}>
       {children}
     </AppContext.Provider>
   );

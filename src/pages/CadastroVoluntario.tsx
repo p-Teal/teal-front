@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { cadastrarVoluntario } from "../services/voluntario";
+import { cadastrarVoluntario } from "../services/voluntarioService";
 
 const schema = z.object({
   nome: z.string().trim().min(10, 'Nome precisa ter no mínimo 10 caracteres').max(50, 'Nome precisa ter no máximo 50 caracteres'),
@@ -39,7 +39,6 @@ export default function CadastroVoluntario() {
     });
 
     if (response.status === 201) {
-      console.log(response.data);
       const { admin } = response.data.voluntario;
       if (admin) {
         toast.success("Administrador cadastrado com sucesso! Redirecionando...");

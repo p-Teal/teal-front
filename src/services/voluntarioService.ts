@@ -18,11 +18,15 @@ protectedAxios.interceptors.response.use(
     // console.log(err.response);
     if (err.response.status === 401) {
       console.log("Unauthorized");
-      // logoutUser();
+      logout();
     }
     return Promise.reject(err);
   }
 );
+
+export const logout = async () => {
+  await protectedAxios.get("/logout");
+}
 
 export const cadastrarVoluntario = async (voluntario: any) => {
   try {
@@ -52,3 +56,4 @@ export const getVoluntario = async () => {
     return error.response;
   }
 };
+

@@ -6,13 +6,20 @@ export const appReducer = (state: any, action: any) => {
       return {
         ...state,
         voluntarioId: action.payload.voluntarioId,
-        voluntarioName: action.payload.voluntarioName,
+        voluntarioNome: action.payload.voluntarioNome,
         voluntarioCpf: action.payload.voluntarioCpf,
         admin: action.payload.admin,
+        loadingApp: false,
       }
     case "LOGOUT":
       return {
         ...initialState,
+        loadingApp: false,
+      }
+    case "START":
+      return {
+        ...state,
+        loadingApp: true,
       }
     default:
       return state;
