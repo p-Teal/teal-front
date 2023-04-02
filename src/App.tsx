@@ -3,6 +3,7 @@ import AuthProtect from "./components/AuthProtect";
 import Layout from "./components/Layout";
 import CadastroVoluntario from "./pages/CadastroVoluntario";
 import Login from "./pages/Login";
+import Voluntarios from "./pages/Voluntarios";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           }
         >
           <Route index element={<h1>index</h1>} />
-          <Route path="voluntarios" element={<h1>voluntarios</h1>} />
+          <Route path="voluntarios" element={<Voluntarios />} />
           <Route path="animais" element={<h1>animais</h1>} />
           <Route path="adocoes" element={<h1>adocoes</h1>} />
           <Route path="tutores" element={<h1>adotantes</h1>} />

@@ -26,7 +26,7 @@ protectedAxios.interceptors.response.use(
 
 export const logout = async () => {
   await protectedAxios.get("/logout");
-}
+};
 
 export const cadastrarVoluntario = async (voluntario: any) => {
   try {
@@ -57,3 +57,20 @@ export const getVoluntario = async () => {
   }
 };
 
+export const getVoluntarios = async () => {
+  try {
+    const response = await protectedAxios.get("/getVoluntarios");
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const getVoluntarioById = async (id: string) => {
+  try {
+    const response = await protectedAxios.get(`/getVoluntarioById/${id}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
