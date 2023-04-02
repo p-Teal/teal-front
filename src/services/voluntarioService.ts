@@ -74,3 +74,30 @@ export const getVoluntarioById = async (id: string) => {
     return error.response;
   }
 };
+
+export const deleteVoluntario = async (cpf: string) => {
+  try {
+    const response = await protectedAxios.delete(`/deleteVoluntario/${cpf}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const ativarVoluntario = async (cpf: string) => {
+  try {
+    const response = await protectedAxios.post(`/ativarVoluntario/${cpf}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const desativarVoluntario = async (cpf: string) => {
+  try {
+    const response = await protectedAxios.post(`/desativarVoluntario/${cpf}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

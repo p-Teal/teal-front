@@ -51,7 +51,7 @@ export default function Login() {
     if (response.status === 200) {
       toast.success("Login realizado com sucesso! Redirecionando...");
       reset();
-      const { admin, _id, nome, cpf } = response.data.voluntario;
+      const { admin, _id, nome, cpf, ativo } = response.data.voluntario;
       setTimeout(() => {
         dispatch({
           type: "SET_VOLUNTARIO",
@@ -60,6 +60,7 @@ export default function Login() {
             voluntarioId: _id,
             voluntarioNome: nome,
             voluntarioCpf: cpf,
+            ativo,
           },
         });
         navigate("/");
@@ -75,6 +76,7 @@ export default function Login() {
           voluntarioId: "",
           voluntarioNome: "",
           voluntarioCpf: "",
+          ativo: false,
         },
       });
       return;

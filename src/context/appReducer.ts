@@ -9,19 +9,20 @@ export const appReducer = (state: any, action: any) => {
         voluntarioNome: action.payload.voluntarioNome,
         voluntarioCpf: action.payload.voluntarioCpf,
         admin: action.payload.admin,
+        ativo: action.payload.ativo,
         loadingApp: false,
-      }
+      };
     case "LOGOUT":
       return {
         ...initialState,
         loadingApp: false,
-      }
+      };
     case "START":
       return {
         ...state,
         loadingApp: true,
-      }
+      };
     default:
       return state;
   }
-}
+};

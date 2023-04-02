@@ -7,13 +7,13 @@ interface Props {
 }
 
 export default function AuthProtect({ children }: Props): JSX.Element {
-  const { voluntarioId, loadingApp } = useAppContext();
+  const { voluntarioId, loadingApp, ativo } = useAppContext();
 
   if (loadingApp) {
     return <div>Carregando...</div>;
   }
 
-  if (!voluntarioId || voluntarioId === '') {
+  if (!voluntarioId || voluntarioId === "" || !ativo) {
     return <Navigate to="/login" />;
   }
   return children as JSX.Element;

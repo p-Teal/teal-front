@@ -7,6 +7,7 @@ export interface IInitialState {
   voluntarioNome: string;
   voluntarioCpf: string;
   admin: boolean;
+  ativo: boolean;
   loadingApp: boolean;
 }
 
@@ -15,6 +16,7 @@ const initialState: IInitialState = {
   voluntarioNome: "",
   voluntarioCpf: "",
   admin: false,
+  ativo: false,
   loadingApp: true,
 };
 
@@ -38,7 +40,7 @@ const AppProvider = ({ children }: AppProps) => {
     const response = await getVoluntario();
 
     if (response.status === 200) {
-      const { admin, _id, nome, cpf } = response.data.voluntario;
+      const { admin, _id, nome, cpf, ativo } = response.data.voluntario;
       dispatch({
         type: "SET_VOLUNTARIO",
         payload: {
@@ -46,6 +48,7 @@ const AppProvider = ({ children }: AppProps) => {
           voluntarioId: _id,
           voluntarioNome: nome,
           voluntarioCpf: cpf,
+          ativo,
         },
       });
     } else {
@@ -56,9 +59,9 @@ const AppProvider = ({ children }: AppProps) => {
           voluntarioId: "",
           voluntarioNome: "",
           voluntarioCpf: "",
+          ativo: false,
         },
       });
-      if (response.status === 401) return;
     }
   };
 
@@ -69,7 +72,7 @@ const AppProvider = ({ children }: AppProps) => {
       console.log(error);
     }
     dispatch({
-      type: "LOGOUT"
+      type: "LOGOUT",
     });
   };
 
@@ -78,7 +81,14 @@ const AppProvider = ({ children }: AppProps) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ ...(state as IInitialState), dispatch, startLoadingApp, logoutContext }}>
+    <AppContext.Provider
+      value={{
+        ...(state as IInitialState),
+        dispatch,
+        startLoadingApp,
+        logoutContext,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
