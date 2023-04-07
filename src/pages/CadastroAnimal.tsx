@@ -19,7 +19,7 @@ export default function CadastroAnimal() {
 
   console.log(errors);
 
-  const classNameInput = "border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-[320px] hover:border-teal-500 hover:shadow-md";
+  const classNameInput = "border-2 border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-[320px] hover:border-teal-500 hover:shadow-md";
 
   const checkErrorInput = (message?: string) => {
     if (message) {
@@ -53,7 +53,7 @@ export default function CadastroAnimal() {
               className={checkErrorInput(errors.registroAnimal?.message)}
             />
             {errors.registroAnimal && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.registroAnimal.message}
               </span>
             )}
@@ -65,11 +65,12 @@ export default function CadastroAnimal() {
             <input
               type="text"
               id="nome"
+              autoComplete="off"
               {...register("nome")}
               className={checkErrorInput(errors.nome?.message)}
             />
             {errors.nome && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.nome.message}
               </span>
             )}
@@ -85,7 +86,7 @@ export default function CadastroAnimal() {
               className={checkErrorInput(errors.apelido?.message)}
             />
             {errors.apelido && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.apelido.message}
               </span>
             )}
@@ -94,21 +95,25 @@ export default function CadastroAnimal() {
             <label htmlFor="tipo" className="text-slate-700">
               Tipo *
             </label>
-            <select
-              id="tipo"
-              {...register("tipo")}
-              className={checkErrorInput(errors.tipo?.message)}
-              defaultValue=""
-            >
-              <option disabled value="">
-                Selecione
-              </option>
-              <option value="cachorro">Cachorro</option>
-              <option value="gato">Gato</option>
-              <option value="outro">Outro</option>
-            </select>
+            <div className="relative inline-block w-[320px] text-slate-700">
+              <select
+                id="tipo"
+                {...register("tipo")}
+                className={`${checkErrorInput(errors.tipo?.message)} appearance-none pr-6`}
+                defaultValue="">
+                <option disabled value="">
+                  Selecione
+                </option>
+                <option value="cachorro">Cachorro</option>
+                <option value="gato">Gato</option>
+                <option value="outro">Outro</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+              </div>
+            </div>
             {errors.tipo && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.tipo.message}
               </span>
             )}
@@ -117,20 +122,24 @@ export default function CadastroAnimal() {
             <label htmlFor="sexo" className="text-slate-700">
               Sexo *
             </label>
-            <select
-              id="sexo"
-              {...register("sexo")}
-              className={checkErrorInput(errors.sexo?.message)}
-              defaultValue=""
-            >
-              <option disabled value="">
-                Selecione
-              </option>
-              <option value="macho">Macho</option>
-              <option value="femea">Fêmea</option>
-            </select>
+            <div className="relative inline-block w-[320px] text-slate-700">
+              <select
+                id="sexo"
+                {...register("sexo")}
+                className={`${checkErrorInput(errors.sexo?.message)} appearance-none pr-6`}
+                defaultValue="">
+                <option disabled value="">
+                  Selecione
+                </option>
+                <option value="macho">Macho</option>
+                <option value="femea">Fêmea</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+              </div>
+            </div>
             {errors.sexo && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.sexo.message}
               </span>
             )}
@@ -146,14 +155,14 @@ export default function CadastroAnimal() {
               className={checkErrorInput(errors.raca?.message)}
             />
             {errors.raca && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.raca.message}
               </span>
             )}
           </div>
         </div>
 
-        <div className="xl:min-h-[650px] bg-teal-500 w-1 rounded-lg"></div>
+        <div className="xl:min-h-full bg-teal-500 w-1 rounded-lg mr-12"></div>
 
         <div className="flex flex-col flex-1 pt-2 gap-5">
           <h2 className="text-2xl font-medium text-slate-700">Dados Extras</h2>
@@ -168,7 +177,7 @@ export default function CadastroAnimal() {
               className={checkErrorInput(errors.dataNascimento?.message)}
             />
             {errors.dataNascimento && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.dataNascimento.message}
               </span>
             )}
@@ -184,7 +193,7 @@ export default function CadastroAnimal() {
               className={checkErrorInput(errors.dataEntrada?.message)}
             />
             {errors.dataEntrada && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.dataEntrada.message}
               </span>
             )}
@@ -196,9 +205,9 @@ export default function CadastroAnimal() {
                 type="checkbox"
                 id="castrado"
                 {...register("castrado")}
-                className="appearance-none w-6 h-6 text-teal-600 bg-white focus:ring-teal-500 focus:ring-2 rounded hover:ring-teal-500 hover:ring-2 checked:bg-teal-500"
+                className="appearance-none w-6 h-6 text-teal-600 border-2 border-slate-700 bg-white rounded hover:ring-teal-500 hover:ring-2 checked:bg-teal-500"
               />
-              <span className="ml-2 text-gray-700">Sim</span>
+              <span className="ml-2 text-slate-700 hover:select-none">Sim</span>
             </label>
           </div>
           <div className="flex flex-col gap-1">
@@ -208,10 +217,10 @@ export default function CadastroAnimal() {
             <textarea
               id="descricao"
               {...register("descricao")}
-              className={checkErrorInput(errors.descricao?.message)}
+              className={`${checkErrorInput(errors.descricao?.message)} min-h-[100px]`}
             />
             {errors.descricao && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.descricao.message}
               </span>
             )}
@@ -228,10 +237,10 @@ export default function CadastroAnimal() {
               file:rounded file:border-0
               file:text-sm file:font-semibold
               file:bg-teal-50 file:text-teal-700
-              hover:file:bg-teal-500 hover:file:text-white"
+              hover:file:bg-teal-500 hover:file:text-white file:cursor-pointer"
             />
             {errors.foto && (
-              <span className="text-red-600 text-sm font-bold px-1">
+              <span className="text-red-600 text-sm px-1">
                 {errors.foto.message as string}
               </span>
             )}
@@ -246,7 +255,7 @@ export default function CadastroAnimal() {
             </button>
             <button
               type="reset"
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-5 rounded w-28"
+              className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-5 rounded w-28"
               onClick={() => reset()}
             >
               Limpar
