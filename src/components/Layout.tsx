@@ -65,7 +65,7 @@ export default function Layout() {
             Adoções
           </NavLink>
           <NavLink
-            to="/estoque"
+            to="/doacoes"
             className={({ isActive }) => handleActive(isActive)}
           >
             <HandHeart size={30} className="mx-2" />
@@ -95,7 +95,7 @@ export default function Layout() {
             Sobre
           </NavLink>
           <div
-            className="w-full flex flex-row items-center hover:bg-red-400 p-2 cursor-pointer"
+            className="w-full flex flex-row items-center hover:bg-red-600 hover:text-white p-2 cursor-pointer"
             onClick={openModal}
           >
             <SignOut size={30} className="mx-2" />
@@ -103,7 +103,7 @@ export default function Layout() {
           </div>
         </div>
       </div>
-      <div className="w-5/6 ml-[18%] p-4">
+      <div className="w-5/6 ml-[18%] p-4 pt-10">
         <Outlet />
       </div>
       <Modal onClose={closeModal} isOpen={isOpen} title="LOGOUT">

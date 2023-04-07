@@ -65,7 +65,6 @@ export default function Login() {
         });
         navigate("/");
       }, 2500);
-      return;
     } else {
       toast.error(`Erro! ${response.data.mensagem}`);
       reset();
@@ -79,7 +78,6 @@ export default function Login() {
           ativo: false,
         },
       });
-      return;
     }
   };
 

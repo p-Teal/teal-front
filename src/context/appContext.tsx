@@ -66,11 +66,7 @@ const AppProvider = ({ children }: AppProps) => {
   };
 
   const logoutContext = () => {
-    try {
-      logout();
-    } catch (error) {
-      console.log(error);
-    }
+    logout();
     dispatch({
       type: "LOGOUT",
     });

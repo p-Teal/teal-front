@@ -26,7 +26,7 @@ export default function CadastroVoluntario() {
 
   const handleErrorInputRing = (message?: string): string => {
     if (message) {
-      return "border-2 border-red-500 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent";
+      return "border-2 border-red-600 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent";
     }
     return "border-2 border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent";
   }
@@ -67,19 +67,19 @@ export default function CadastroVoluntario() {
           <div className="flex flex-col py-1 h-fit">
             <input type="text" autoComplete="off" placeholder="Nome Completo" {...register("nome")}
               className={handleErrorInputRing(errors.nome?.message)} />
-            <span className="text-red-500 text-sm h-5 pl-3 pt-1">{errors.nome?.message}</span>
+            <span className="text-red-600 text-sm h-5 pl-3 pt-1">{errors.nome?.message}</span>
           </div>
 
           <div className="flex flex-col py-1 h-fit">
             <input type="text" autoComplete="off" placeholder="CPF" {...register("cpf")}
               className={handleErrorInputRing(errors.cpf?.message)} />
-            <span className="text-red-500 text-sm h-5 pl-3 pt-1">{errors.cpf?.message}</span>
+            <span className="text-red-600 text-sm h-5 pl-3 pt-1">{errors.cpf?.message}</span>
           </div>
 
           <div className="flex flex-col py-1 h-fit">
             <input type="password" autoComplete="off" placeholder="Senha" {...register("senha")}
               className={handleErrorInputRing(errors.senha?.message)} />
-            <span className="text-red-500 text-sm h-5 pl-3 pt-1">{errors.senha?.message}</span>
+            <span className="text-red-600 text-sm h-5 pl-3 pt-1">{errors.senha?.message}</span>
           </div>
 
           <button type="submit" disabled={isSubmitting}

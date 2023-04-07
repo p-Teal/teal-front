@@ -11,7 +11,7 @@ export default function LoginInput({ register, error }: LoginProps) {
   return (
     <div
       className={`flex flex-row items-center rounded max-w-[320px] min-w-[320px] h-14 shadow-md mb-4 ${
-        hasError ? "border-1 border-red-500" : ""
+        hasError ? "border-1 border-red-600" : ""
       }`}
     >
       <label
@@ -29,7 +29,7 @@ export default function LoginInput({ register, error }: LoginProps) {
         placeholder="CPF"
         autoComplete="off"
       />
-      {hasError && <span className="text-red-500 text-xs">{error}</span>}
+      {hasError && <span className="text-red-600 text-xs">{error}</span>}
     </div>
   );
 }

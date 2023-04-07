@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { CheckCircle, Info, Prohibit, Trash } from "@phosphor-icons/react";
 import Modal from "../components/Modal";
 import { cpfMask } from "../utils/cpfmask";
+import { useAppContext } from "../context/appContext";
 
 interface Voluntario {
   _id: string;
@@ -25,6 +26,7 @@ interface IVoluntarioResponse {
 }
 
 export default function Voluntarios() {
+  const { logoutContext } = useAppContext();
   const [voluntarios, setVoluntarios] = useState<IVoluntarioResponse>({
     voluntarios: [],
     totalVoluntarios: -1,
@@ -37,6 +39,9 @@ export default function Voluntarios() {
   const [isOpenOff, setIsOpenOff] = useState(false);
   const [voluntarioJson, setVoluntarioJson] = useState<any>();
 
+  const sessionMessage =
+    "Sessão expirada, faça login novamente para continuar.";
+
   const circleIcon = (ativo: boolean) => {
     if (ativo) {
       return (
@@ -44,7 +49,7 @@ export default function Voluntarios() {
       );
     }
     return (
-      <div className="rounded-full bg-red-500 h-4 w-4 m-1 shadow-red-500 shadow-sm"></div>
+      <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-sm"></div>
     );
   };
 
@@ -53,6 +58,9 @@ export default function Voluntarios() {
 
     if (response.status === 200) {
       setIsOpenInfo(true);
+    } else if (response.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
     } else {
       return toast.error(
         `Erro ao carregar voluntário: ${response.data.message}`
@@ -94,6 +102,9 @@ export default function Voluntarios() {
 
     if (response.status === 200) {
       setVoluntarios(response.data);
+    } else if (response.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
     } else {
       setError(response.data.message);
       toast.error(`Erro ao carregar voluntários: ${response.data.message}`);
@@ -108,6 +119,9 @@ export default function Voluntarios() {
     if (response.status === 200) {
       toast.success("Voluntário deletado com sucesso!");
       getVoluntariosData();
+    } else if (response.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
     } else {
       toast.error(`Erro ao deletar voluntário: ${response.data.message}`);
     }
@@ -120,6 +134,9 @@ export default function Voluntarios() {
     if (response.status === 200) {
       toast.success("Voluntário ativado com sucesso!");
       getVoluntariosData();
+    } else if (response.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
     } else {
       toast.error(`Erro ao ativar voluntário: ${response.data.message}`);
     }
@@ -132,6 +149,9 @@ export default function Voluntarios() {
     if (response.status === 200) {
       toast.success("Voluntário desativado com sucesso!");
       getVoluntariosData();
+    } else if (response.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
     } else {
       toast.error(`Erro ao desativar voluntário: ${response.data.message}`);
     }
@@ -144,7 +164,7 @@ export default function Voluntarios() {
 
   return (
     <>
-      <h1 className="text-4xl font-medium pb-8 text-slate-700">Voluntários</h1>
+      <h1 className="text-5xl font-medium pb-8 text-slate-700">Voluntários</h1>
 
       {loading && <p>Carregando...</p>}
       {error && <p className="text-xl text-slate-700">{error}</p>}
@@ -197,13 +217,13 @@ export default function Voluntarios() {
                       />
                       <Trash
                         size={24}
-                        className="hover:text-red-500 mx-2"
+                        className="hover:text-red-600 mx-2"
                         onClick={() => openModalDelete(voluntario.cpf)}
                       />
                       {voluntario.ativo ? (
                         <Prohibit
                           size={24}
-                          className="hover:text-red-500 mx-2"
+                          className="hover:text-red-600 mx-2"
                           onClick={() => openModalOff(voluntario.cpf)}
                         />
                       ) : (

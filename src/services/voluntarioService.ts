@@ -10,19 +10,19 @@ const protectedAxios = axios.create({
   withCredentials: true,
 });
 
-protectedAxios.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (err) => {
-    // console.log(err.response);
-    if (err.response.status === 401) {
-      console.log("Unauthorized");
-      logout();
-    }
-    return Promise.reject(err);
-  }
-);
+// protectedAxios.interceptors.response.use(
+//   (response) => {
+//     return response;
+//   },
+//   (err) => {
+//     // console.log(err.response);
+//     if (err.response.status === 401) {
+//       console.log("Unauthorized");
+//       logout();
+//     }
+//     return Promise.reject(err);
+//   }
+// );
 
 export const logout = async () => {
   await protectedAxios.get("/logout");
