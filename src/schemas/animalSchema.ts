@@ -2,11 +2,6 @@ import { z } from "zod";
 import moment from "moment";
 
 const animalSchema = z.object({
-  registroAnimal: z
-    .string()
-    .trim()
-    .min(2, "Registro precisa ter no mínimo 2 caracteres")
-    .max(50, "Registro precisa ter no máximo 50 caracteres"),
   nome: z
     .string()
     .trim()
@@ -26,7 +21,7 @@ const animalSchema = z.object({
   sexo: z
     .string()
     .refine(
-      (value) => ["macho", "femea"].includes(value),
+      (value) => ["M", "F"].includes(value),
       "Selecione uma opção válida"
     ),
   raca: z
@@ -70,18 +65,15 @@ const animalSchema = z.object({
     .or(z.literal("")),
   castrado: z.boolean(),
   descricao: z
-    .string()
-    .trim()
-    .max(500, "Descrição precisa ter no máximo 500 caracteres")
-    .nullable(),
-  foto: z
-    .any()
-    .refine((value) => {
-      if (!value || value.length === 0) return false;
-      const [type, extension] = value[0].type.split("/");
-      return type === "image" && ["jpeg", "png", "jpg"].includes(extension);
-    }, "Selecione uma imagem válida")
+    .optional(
+      z.string().max(500, "Descrição precisa ter no máximo 500 caracteres")
+    )
+    .or(z.literal("")),
+  urlFoto: z.any().refine((value) => {
+    if (!value || value.length === 0) return false;
+    const [type, extension] = value[0].type.split("/");
+    return type === "image" && ["jpeg", "png", "jpg"].includes(extension);
+  }, "Selecione uma imagem válida"),
 });
-
 
 export default animalSchema;

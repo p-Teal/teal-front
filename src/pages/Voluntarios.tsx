@@ -25,6 +25,8 @@ interface IVoluntarioResponse {
   totalVoluntarios: number;
 }
 
+const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
+
 export default function Voluntarios() {
   const { logoutContext } = useAppContext();
   const [voluntarios, setVoluntarios] = useState<IVoluntarioResponse>({
@@ -38,9 +40,6 @@ export default function Voluntarios() {
   const [isOpenOn, setIsOpenOn] = useState(false);
   const [isOpenOff, setIsOpenOff] = useState(false);
   const [voluntarioJson, setVoluntarioJson] = useState<any>();
-
-  const sessionMessage =
-    "Sessão expirada, faça login novamente para continuar.";
 
   const circleIcon = (ativo: boolean) => {
     if (ativo) {
@@ -167,7 +166,7 @@ export default function Voluntarios() {
       <h1 className="text-5xl font-medium pb-8 text-slate-700">Voluntários</h1>
 
       {loading && <p>Carregando...</p>}
-      {error && <p className="text-xl text-slate-700">{error}</p>}
+      {error && <p className="text-xl text-red-600">{error}</p>}
       {voluntarios.totalVoluntarios === 0 && (
         <p className="text-xl text-slate-700">Nenhum voluntário cadastrado.</p>
       )}
@@ -175,7 +174,7 @@ export default function Voluntarios() {
       {voluntarios.totalVoluntarios > 0 && (
         <>
           <p className="text-xl text-slate-700">
-            Total de voluntários: {voluntarios.totalVoluntarios}
+            Total de voluntários cadastrados: {voluntarios.totalVoluntarios}
           </p>
 
           <div className="mr-5 mt-8 w-auto">

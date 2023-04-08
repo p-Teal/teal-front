@@ -1,11 +1,19 @@
+import { v4 as uuidv4 } from "uuid";
+import { storage } from "../utils/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import animalSchema from "../schemas/animalSchema";
+import { createAnimal } from "../services/animalService";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/appContext";
 
 type FormProps = z.infer<typeof animalSchema>;
 
 export default function CadastroAnimal() {
+  const { logoutContext } = useAppContext();
   const {
     register,
     handleSubmit,
@@ -16,17 +24,63 @@ export default function CadastroAnimal() {
     resolver: zodResolver(animalSchema),
     shouldFocusError: true,
   });
+  const nav = useNavigate();
 
   console.log(errors);
 
-  const classNameInput = "border-2 border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-[320px] hover:border-teal-500 hover:shadow-md";
+  const classNameInput =
+    "border-2 border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-[320px] hover:border-teal-500 hover:shadow-md";
 
   const checkErrorInput = (message?: string) => {
     if (message) {
       return "border-2 border-red-600 p-2 rounded-lg w-[320px] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent text-red-600";
     }
     return classNameInput;
-  }
+  };
+
+  const onSubmit = async (data: FormProps) => {
+    const uuidValue = uuidv4();
+
+    const dataToSend = {
+      animalId: uuidValue,
+      ...data,
+    };
+
+    if (dataToSend.dataNascimento === "") {
+      delete dataToSend.dataNascimento;
+    }
+
+    if (dataToSend.dataEntrada === "") {
+      delete dataToSend.dataEntrada;
+    }
+
+    if (dataToSend.descricao === "") {
+      delete dataToSend.descricao;
+    }
+
+    const file = dataToSend.urlFoto[0];
+    delete dataToSend.urlFoto;
+
+    const imageRef = ref(storage, `Animais/${uuidValue}`);
+    const firebaseReturn = await uploadBytes(imageRef, file);
+    const url = await getDownloadURL(firebaseReturn.ref);
+
+    dataToSend.urlFoto = url;
+
+    const resp = await createAnimal(dataToSend);
+
+    if (resp.status === 201) {
+      toast.success("Animal cadastrado com sucesso!");
+      reset();
+      return nav("/animais");
+    } else if (resp.status === 401) {
+      toast.error("Sessão expirada, faça login novamente para continuar.");
+      return logoutContext();
+    } else {
+      toast.error(`Erro! ${resp.data.mensagem}`);
+    }
+    return;
+  };
 
   return (
     <>
@@ -35,29 +89,13 @@ export default function CadastroAnimal() {
       </h1>
 
       <form
-        onSubmit={handleSubmit((data) => console.log(data))}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
       >
         <div className="flex flex-col min-w-1/2 w-1/2 pt-2 gap-5">
           <h2 className="text-2xl font-medium text-slate-700">
             Dados do Animal
           </h2>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="registroAnimal" className="text-slate-700">
-              Registro *
-            </label>
-            <input
-              type="text"
-              id="registroAnimal"
-              {...register("registroAnimal")}
-              className={checkErrorInput(errors.registroAnimal?.message)}
-            />
-            {errors.registroAnimal && (
-              <span className="text-red-600 text-sm px-1">
-                {errors.registroAnimal.message}
-              </span>
-            )}
-          </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="nome" className="text-slate-700">
               Nome *
@@ -99,8 +137,11 @@ export default function CadastroAnimal() {
               <select
                 id="tipo"
                 {...register("tipo")}
-                className={`${checkErrorInput(errors.tipo?.message)} appearance-none pr-6`}
-                defaultValue="">
+                className={`${checkErrorInput(
+                  errors.tipo?.message
+                )} appearance-none pr-6`}
+                defaultValue=""
+              >
                 <option disabled value="">
                   Selecione
                 </option>
@@ -109,7 +150,13 @@ export default function CadastroAnimal() {
                 <option value="outro">Outro</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
               </div>
             </div>
             {errors.tipo && (
@@ -126,16 +173,25 @@ export default function CadastroAnimal() {
               <select
                 id="sexo"
                 {...register("sexo")}
-                className={`${checkErrorInput(errors.sexo?.message)} appearance-none pr-6`}
-                defaultValue="">
+                className={`${checkErrorInput(
+                  errors.sexo?.message
+                )} appearance-none pr-6`}
+                defaultValue=""
+              >
                 <option disabled value="">
                   Selecione
                 </option>
-                <option value="macho">Macho</option>
-                <option value="femea">Fêmea</option>
+                <option value="M">Macho</option>
+                <option value="F">Fêmea</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" fillRule="evenodd"></path></svg>
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
               </div>
             </div>
             {errors.sexo && (
@@ -217,31 +273,33 @@ export default function CadastroAnimal() {
             <textarea
               id="descricao"
               {...register("descricao")}
-              className={`${checkErrorInput(errors.descricao?.message)} min-h-[100px]`}
+              className={`${checkErrorInput(
+                errors.descricao?.message as string
+              )} min-h-[100px]`}
             />
             {errors.descricao && (
               <span className="text-red-600 text-sm px-1">
-                {errors.descricao.message}
+                {errors.descricao.message as string}
               </span>
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="foto" className="text-slate-700">
+            <label htmlFor="urlFoto" className="text-slate-700">
               Foto *
             </label>
             <input
               type="file"
-              id="foto"
-              {...register("foto")}
+              id="urlFoto"
+              {...register("urlFoto")}
               className="file:mr-3 file:py-2 file:px-4
               file:rounded file:border-0
               file:text-sm file:font-semibold
               file:bg-teal-50 file:text-teal-700
               hover:file:bg-teal-500 hover:file:text-white file:cursor-pointer"
             />
-            {errors.foto && (
+            {errors.urlFoto && (
               <span className="text-red-600 text-sm px-1">
-                {errors.foto.message as string}
+                {errors.urlFoto.message as string}
               </span>
             )}
           </div>
@@ -250,6 +308,7 @@ export default function CadastroAnimal() {
             <button
               type="submit"
               className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-5 rounded w-28"
+              disabled={isSubmitting}
             >
               Cadastrar
             </button>
@@ -257,6 +316,7 @@ export default function CadastroAnimal() {
               type="reset"
               className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-5 rounded w-28"
               onClick={() => reset()}
+              disabled={isSubmitting}
             >
               Limpar
             </button>
