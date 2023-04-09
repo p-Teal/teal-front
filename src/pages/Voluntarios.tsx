@@ -62,7 +62,7 @@ export default function Voluntarios() {
       return logoutContext();
     } else {
       return toast.error(
-        `Erro ao carregar voluntário: ${response.data.message}`
+        `Erro ao carregar voluntário: ${response.data.mensagem}`
       );
     }
 
@@ -105,8 +105,8 @@ export default function Voluntarios() {
       toast.error(sessionMessage);
       return logoutContext();
     } else {
-      setError(response.data.message);
-      toast.error(`Erro ao carregar voluntários: ${response.data.message}`);
+      setError(response.data.mensagem);
+      toast.error(`Erro ao carregar voluntários: ${response.data.mensagem}`);
     }
 
     setLoading(false);
@@ -122,7 +122,7 @@ export default function Voluntarios() {
       toast.error(sessionMessage);
       return logoutContext();
     } else {
-      toast.error(`Erro ao deletar voluntário: ${response.data.message}`);
+      toast.error(`Erro ao deletar voluntário: ${response.data.mensagem}`);
     }
     closeModal();
   };
@@ -137,7 +137,7 @@ export default function Voluntarios() {
       toast.error(sessionMessage);
       return logoutContext();
     } else {
-      toast.error(`Erro ao ativar voluntário: ${response.data.message}`);
+      toast.error(`Erro ao ativar voluntário: ${response.data.mensagem}`);
     }
     closeModal();
   };
@@ -152,7 +152,7 @@ export default function Voluntarios() {
       toast.error(sessionMessage);
       return logoutContext();
     } else {
-      toast.error(`Erro ao desativar voluntário: ${response.data.message}`);
+      toast.error(`Erro ao desativar voluntário: ${response.data.mensagem}`);
     }
     closeModal();
   };

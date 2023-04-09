@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import animalSchema from "../schemas/animalSchema";
 import { createAnimal } from "../services/animalService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
+import { ArrowLeft } from "@phosphor-icons/react";
 
 type FormProps = z.infer<typeof animalSchema>;
 
@@ -25,8 +26,6 @@ export default function CadastroAnimal() {
     shouldFocusError: true,
   });
   const nav = useNavigate();
-
-  console.log(errors);
 
   const classNameInput =
     "border-2 border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-[320px] hover:border-teal-500 hover:shadow-md";
@@ -46,12 +45,18 @@ export default function CadastroAnimal() {
       ...data,
     };
 
+    const dataNascimentoFormatted = dataToSend.dataNascimento
+      ? dataToSend.dataNascimento.split("-").reverse().join("/")
+      : dataToSend.dataNascimento;
+    const dataEntradaFormatted = dataToSend.dataEntrada
+      ? dataToSend.dataEntrada.split("-").reverse().join("/")
+      : dataToSend.dataEntrada;
+
+    dataToSend.dataNascimento = dataNascimentoFormatted;
+    dataToSend.dataEntrada = dataEntradaFormatted;
+
     if (dataToSend.dataNascimento === "") {
       delete dataToSend.dataNascimento;
-    }
-
-    if (dataToSend.dataEntrada === "") {
-      delete dataToSend.dataEntrada;
     }
 
     if (dataToSend.descricao === "") {
@@ -72,7 +77,9 @@ export default function CadastroAnimal() {
     if (resp.status === 201) {
       toast.success("Animal cadastrado com sucesso!");
       reset();
-      return nav("/animais");
+      setTimeout(() => {
+        return nav("/animais");
+      }, 2000);
     } else if (resp.status === 401) {
       toast.error("Sessão expirada, faça login novamente para continuar.");
       return logoutContext();
@@ -87,7 +94,13 @@ export default function CadastroAnimal() {
       <h1 className="sm:text-5xl text-2xl font-medium text-slate-700 pb-8">
         Cadastro de Animal
       </h1>
-
+      <NavLink
+        to="/animais"
+        className="text-teal-500 hover:underline font-medium hover:text-slate-700"
+      >
+        <ArrowLeft size={18} className="inline-block mr-2" />
+        Voltar para a lista de animais
+      </NavLink>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
@@ -240,7 +253,7 @@ export default function CadastroAnimal() {
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="dataEntrada" className="text-slate-700">
-              Data de Entrada
+              Data de Entrada *
             </label>
             <input
               type="date"
@@ -314,7 +327,7 @@ export default function CadastroAnimal() {
             </button>
             <button
               type="reset"
-              className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-5 rounded w-28"
+              className="bg-slate-700 hover:bg-slate-700 text-white font-bold py-2 px-5 rounded w-28"
               onClick={() => reset()}
               disabled={isSubmitting}
             >

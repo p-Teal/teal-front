@@ -4,8 +4,10 @@ import { useAppContext } from "../context/appContext";
 import { useEffect, useState } from "react";
 import { getAnimais } from "../services/animalService";
 import { toast } from "react-toastify";
+import CardAnimal from "../components/CardAnimal";
+import Modal from "../components/Modal";
 
-interface IAnimal {
+export interface IAnimal {
   animalId: string;
   apelido: string;
   status: string;
@@ -13,6 +15,12 @@ interface IAnimal {
   raca: string;
   tipo: string;
   urlFoto: string;
+  dataEntrada?: string;
+  dataNascimento?: string;
+  castrado?: boolean;
+  _id: string;
+  descricao?: string;
+  createdAt: string;
 }
 
 interface IAnimalResponse {
@@ -30,6 +38,19 @@ export default function Animais() {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [animalInfo, setAnimalInfo] = useState<IAnimal | null>(null);
+
+  const openCardInfo = (animalParam: IAnimal) => {
+    setAnimalInfo(animalParam);
+    console.log(animalParam);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setAnimalInfo(null);
+  };
 
   const getAnimaisData = async () => {
     setLoading(true);
@@ -79,30 +100,22 @@ export default function Animais() {
             Total de animais cadastrados: {animais.totalAnimais}
           </p>
 
-          <div className="grid grid-flow-row gap-5 text-slate-700 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {animais.animais.map((animal) => {
-              return (
-                <div
-                  key={animal.animalId}
-                  className="my-8 rounded-lg shadow-lg shadow-slate-400 bg-white duration-300 hover:-translate-y-1 cursor-pointer"
-                >
-                  <img
-                    src={animal.urlFoto}
-                    alt={animal.apelido}
-                    className="h-72 w-full object-cover rounded-t-lg"
-                    loading="lazy"
-                  />
-                  <div className="p-4">
-                    <h1 className="text-lg mb-4 font-bold leading-relaxed text-slate-700">
-                      {animal.apelido}
-                    </h1>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid grid-flow-row gap-5 text-slate-200 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {animais.animais.map((animal) => (
+              <CardAnimal
+                animal={animal}
+                key={animal.animalId}
+                clickCard={() => openCardInfo(animal)}
+              />
+            ))}
           </div>
         </>
       )}
+      <Modal isOpen={modalOpen} onClose={handleModalClose} title={`Detalhes`}>
+        <pre className="overflow-y-auto">
+          {animalInfo && JSON.stringify(animalInfo, null, 2)}
+        </pre>
+      </Modal>
     </>
   );
 }

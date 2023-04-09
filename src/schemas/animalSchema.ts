@@ -11,7 +11,7 @@ const animalSchema = z.object({
     .string()
     .trim()
     .min(2, "Apelido precisa ter no mínimo 2 caracteres")
-    .max(50, "Apelido precisa ter no máximo 50 caracteres"),
+    .max(20, "Apelido precisa ter no máximo 20 caracteres"),
   tipo: z
     .string()
     .refine(
@@ -44,16 +44,13 @@ const animalSchema = z.object({
       const [ano, mes, dia] = value.split("/");
       const dataNascimento = moment(`${ano}-${mes}-${dia}`, "YYYY-MM-DD");
       return dataNascimento.isBefore(dataAmanha, "day");
-    }, "Data de Nascimento precisa ser anterior ou igual a data de hoje")
+    }, "Data precisa ser anterior ou igual a data de hoje")
     .or(z.literal("")),
   dataEntrada: z
-    .optional(
-      z
-        .string()
-        .refine(
-          (value) => value.length === 10,
-          "Data precisa ter o formato dd/mm/aaaa"
-        )
+    .string()
+    .refine(
+      (value) => value.length === 10,
+      "Data obrigatória e precisa ter o formato dd/mm/aaaa"
     )
     .refine((value) => {
       if (!value) return true;
@@ -61,8 +58,7 @@ const animalSchema = z.object({
       const [ano, mes, dia] = value.split("/");
       const dataNascimento = moment(`${ano}-${mes}-${dia}`, "YYYY-MM-DD");
       return dataNascimento.isBefore(dataAmanha, "day");
-    }, "Data de Entrada precisa ser anterior ou igual a data de hoje")
-    .or(z.literal("")),
+    }, "Data precisa ser anterior ou igual a data de hoje"),
   castrado: z.boolean(),
   descricao: z
     .optional(
