@@ -1,4 +1,5 @@
 import {
+  ArrowSquareOut,
   Cat,
   Dog,
   Feather,
@@ -19,19 +20,19 @@ export default function CardAnimal({ animal, clickCard }: CardProps) {
   let animalStatus = animal.status;
   let colorStatus;
   if (animalStatus === "adotado") {
-    colorStatus = "bg-sky-900";
+    colorStatus = "bg-sky-900 hover:bg-gradient-to-r hover:from-sky-900 hover:to-sky-800";
   } else if (animalStatus === "em tratamento") {
-    colorStatus = "bg-yellow-900";
+    colorStatus = "bg-yellow-900 hover:bg-gradient-to-r hover:from-yellow-900 hover:to-yellow-800";
   } else if (animalStatus === "não disponível") {
-    colorStatus = "bg-red-900";
+    colorStatus = "bg-gray-700 hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-800";
   } else {
-    colorStatus = "bg-teal-900";
+    colorStatus = "bg-teal-900 hover:bg-gradient-to-r hover:from-teal-900 hover:to-teal-800";
   }
   animalStatus = animalStatus.charAt(0).toUpperCase() + animalStatus.slice(1);
 
-  const classNameCard = `my-8 rounded-lg shadow-lg shadow-slate-400 duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus} leading-relaxed`;
+  const classNameCard = `my-8 rounded-lg shadow-lg shadow-slate-400 duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus}`;
 
-  const data = "08/03/2023";
+  const data = animal.dataEntrada;
 
   const inputMoment = moment(data, "DD/MM/YYYY");
 
@@ -59,33 +60,40 @@ export default function CardAnimal({ animal, clickCard }: CardProps) {
         alt={animal.apelido}
         className="h-72 w-full object-cover rounded-t-lg"
         loading="lazy"
+        // se for não disponível - deixar a imagem em preto e branco
+        {...(animal.status === "não disponível" && {
+          className: "h-72 w-full object-cover rounded-t-lg filter grayscale",
+        })
+        }
       />
-      <div className="p-3 pb-2 flex flex-row gap-2 items-center justify-between">
-        {animal.tipo === "cachorro" && <Dog size={28} />}
-        {animal.tipo === "gato" && <Cat size={28} />}
-        {animal.tipo === "outro" && <Feather size={28} />}
-        <h2 className="text-xl font-medium text-ellipsis overflow-hidden whitespace-nowrap">
+      <div className="flex flex-row items-center justify-between p-2 pt-3">
+        {animal.tipo === "cachorro" && <Dog size={34} />}
+        {animal.tipo === "gato" && <Cat size={34} />}
+        {animal.tipo === "outro" && <Feather size={34} />}
+        <h2 className="text-2xl font-medium text-ellipsis overflow-hidden whitespace-nowrap px-2">
           {animal.apelido}
         </h2>
         {animal.sexo === "M" && (
-          <GenderMale size={28} className="text-teal-400" />
+          <GenderMale size={34} className="text-teal-400" />
         )}
         {animal.sexo === "F" && (
-          <GenderFemale size={28} className="text-pink-400" />
+          <GenderFemale size={34} className="text-pink-400" />
         )}
       </div>
-      <div className="px-3 pb-2 flex flex-row gap-2 items-center justify-between">
-        <small className="text-sm italic overflow-hidden whitespace-nowrap text-ellipsis">
+      <div className="flex flex-row justify-between px-3 py-1 items-center">
+        <p className="italic overflow-hidden whitespace-nowrap text-ellipsis text-sm pr-3">
           {animal.raca}
-        </small>
-        <small className="text-sm font-medium">{animalStatus}</small>
+        </p>
+        <p className="font-medium text-right text-sm">{animalStatus}</p>
       </div>
-      <div className="px-3 pb-3 flex flex-row gap-2 items-center justify-between">
-        <small className="text-sm overflow-hidden whitespace-nowrap text-ellipsis">
+      <div className="flex flex-row justify-between px-3 pb-4 pt-1 items-center">
+        <p className="overflow-hidden whitespace-nowrap text-ellipsis pr-3 text-sm">
           {dias}
-        </small>
-        <NavLink to={`/animais/${animal.animalId}`}>
-          <PencilLine size={24} className="hover:text-teal-400" />
+        </p>
+        <NavLink
+          className="bg-white px-2 py-1 flex items-center justify-center rounded-lg hover:bg-slate-200"
+          to={`/animais/${animal.animalId}`}>
+          <p className="text-xs font-medium text-black">Editar</p>
         </NavLink>
       </div>
     </div>

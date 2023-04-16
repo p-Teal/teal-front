@@ -15,7 +15,7 @@ export interface IAnimal {
   raca: string;
   tipo: string;
   urlFoto: string;
-  dataEntrada?: string;
+  dataEntrada: string;
   dataNascimento?: string;
   castrado?: boolean;
   _id: string;
@@ -100,7 +100,7 @@ export default function Animais() {
             Total de animais cadastrados: {animais.totalAnimais}
           </p>
 
-          <div className="grid grid-flow-row gap-5 text-slate-200 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-flow-row gap-8 text-slate-200 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {animais.animais.map((animal) => (
               <CardAnimal
                 animal={animal}
@@ -112,7 +112,7 @@ export default function Animais() {
         </>
       )}
       <Modal isOpen={modalOpen} onClose={handleModalClose} title={`Detalhes`}>
-        <pre className="overflow-y-auto">
+        <pre className="overflow-y-auto pb-6">
           {animalInfo && JSON.stringify(animalInfo, null, 2)}
         </pre>
       </Modal>
