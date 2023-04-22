@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Voluntarios from "./pages/Voluntarios";
 import Animais from "./pages/Animais";
 import CadastroAnimal from "./pages/CadastroAnimal";
+import Doacoes from "./pages/Doacoes";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
           <Route path="tutores" element={<h1>tutores</h1>} />
           <Route path="sobre" element={<h1>sobre</h1>} />
           <Route path="perfil" element={<h1>perfil</h1>} />
-          <Route path="doacoes" element={<h1>doacoes</h1>} />
+          <Route path="doacoes" element={<Doacoes />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroVoluntario />} />

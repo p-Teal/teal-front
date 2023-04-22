@@ -111,7 +111,11 @@ export default function Animais() {
           </div>
         </>
       )}
-      <Modal isOpen={modalOpen} onClose={handleModalClose} title={`Detalhes`}>
+      <Modal
+        isOpen={modalOpen}
+        onClose={handleModalClose}
+        title="Detalhes do animal"
+      >
         <pre className="overflow-y-auto pb-6">
           {animalInfo && JSON.stringify(animalInfo, null, 2)}
         </pre>
