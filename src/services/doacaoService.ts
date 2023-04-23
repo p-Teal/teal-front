@@ -31,3 +31,12 @@ export const desativaDoacao = async (id: string) => {
     return error.response;
   }
 };
+
+export const createDoacao = async (doacao: any) => {
+  try {
+    const response = await service.post("/createDoacao", doacao);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

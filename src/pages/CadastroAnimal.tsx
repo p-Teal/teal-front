@@ -327,7 +327,7 @@ export default function CadastroAnimal() {
             </button>
             <button
               type="reset"
-              className="bg-slate-700 hover:bg-slate-700 text-white font-bold py-2 px-5 rounded w-28"
+              className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-5 rounded w-28"
               onClick={() => reset()}
               disabled={isSubmitting}
             >

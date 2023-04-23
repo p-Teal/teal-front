@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { deleteDoacao, desativaDoacao, getDoacoes } from "../services/doacaoService";
 import Modal from "../components/Modal";
 import { Plus, ReceiptX, TrashSimple } from "@phosphor-icons/react";
-import { NavLink } from "react-router-dom";
+import ModalDoacao from "../components/ModalDoacao";
 
 interface IDoacao {
   _id: string;
@@ -22,6 +22,17 @@ interface IDoacaoResponse {
   totalDoacoes: number;
 }
 
+const circleIcon = (ativo: boolean) => {
+  if (ativo) {
+    return (
+      <div className="rounded-full bg-teal-700 h-4 w-4 m-1 shadow-teal-700 shadow-md"></div>
+    );
+  }
+  return (
+    <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-md"></div>
+  );
+};
+
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 export default function Doacoes() {
@@ -33,9 +44,14 @@ export default function Doacoes() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [openDoacao, setOpenDoacao] = useState<IDoacao | null>(null);
+  const [openModalDoacao, setOpenModalDoacao] = useState<boolean>(false);
 
   const closeModal = () => {
     setOpenDoacao(null);
+  };
+
+  const closeModalDoacao = () => {
+    setOpenModalDoacao(false);
   };
 
   const getDoacoesData = async () => {
@@ -89,22 +105,9 @@ export default function Doacoes() {
     closeModal();
   };
 
-
-
   useEffect(() => {
     getDoacoesData();
   }, []);
-
-  const circleIcon = (ativo: boolean) => {
-    if (ativo) {
-      return (
-        <div className="rounded-full bg-teal-700 h-4 w-4 m-1 shadow-teal-700 shadow-sm"></div>
-      );
-    }
-    return (
-      <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-sm"></div>
-    );
-  };
 
   return (
     <>
@@ -112,13 +115,12 @@ export default function Doacoes() {
         <h1 className="sm:text-5xl text-3xl font-medium text-slate-700">
           Doações
         </h1>
-        <NavLink
-          to="/animais/novo"
-          className="bg-teal-500 text-2xl text-white rounded-lg py-3 sm:mr-5 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md"
-        >
+        <button
+          onClick={() => setOpenModalDoacao(true)}
+          className="bg-teal-500 text-2xl text-white rounded-lg py-3 sm:mr-5 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md">
           <Plus size={32} />
           Cadastrar
-        </NavLink>
+        </button>
       </div>
 
       {loading && <p>Carregando...</p>}
@@ -139,9 +141,9 @@ export default function Doacoes() {
                 <tr className="flex flex-row justify-start text-left py-3 text-lg w-full px-8">
                   <th className="w-16"></th>
                   <th className="flex-1 pl-6">Remetente</th>
-                  <th className="w-96">Item</th>
-                  <th className="w-64">Quantidade</th>
-                  <th className="w-44">Data</th>
+                  <th className="w-80">Item</th>
+                  <th className="w-56">Quantidade</th>
+                  <th className="w-24">Data</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,13 +160,13 @@ export default function Doacoes() {
                     <td className="flex-1 overflow-ellipsis overflow-hidden whitespace-nowrap px-6">
                       {doacao.remetente}
                     </td>
-                    <td className="w-96 overflow-ellipsis overflow-hidden whitespace-nowrap pr-4">
+                    <td className="w-80 overflow-ellipsis overflow-hidden whitespace-nowrap pr-4">
                       {doacao.item}
                     </td>
-                    <td className="w-64 overflow-ellipsis overflow-hidden whitespace-nowrap pr-4">
+                    <td className="w-56 overflow-ellipsis overflow-hidden whitespace-nowrap pr-4">
                       {doacao.quantidade}
                     </td>
-                    <td className="w-44">
+                    <td className="w-24">
                       {new Date(doacao.createdAt).toLocaleDateString("pt-BR")}
                     </td>
                   </tr>
@@ -205,6 +207,8 @@ export default function Doacoes() {
           )}
         </div>
       </Modal>
+
+      <ModalDoacao isOpen={openModalDoacao} onClose={closeModalDoacao} fetchData={getDoacoesData} />
     </>
   );
 }

@@ -25,6 +25,17 @@ interface IVoluntarioResponse {
   totalVoluntarios: number;
 }
 
+const circleIcon = (ativo: boolean) => {
+  if (ativo) {
+    return (
+      <div className="rounded-full bg-teal-700 h-4 w-4 m-1 shadow-teal-700 shadow-sm"></div>
+    );
+  }
+  return (
+    <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-sm"></div>
+  );
+};
+
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 export default function Voluntarios() {
@@ -40,17 +51,6 @@ export default function Voluntarios() {
   const [isOpenOn, setIsOpenOn] = useState(false);
   const [isOpenOff, setIsOpenOff] = useState(false);
   const [voluntarioJson, setVoluntarioJson] = useState<any>();
-
-  const circleIcon = (ativo: boolean) => {
-    if (ativo) {
-      return (
-        <div className="rounded-full bg-teal-700 h-4 w-4 m-1 shadow-teal-700 shadow-sm"></div>
-      );
-    }
-    return (
-      <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-sm"></div>
-    );
-  };
 
   const openModalInfo = async (id: string) => {
     const response = await getVoluntarioById(id);
@@ -184,7 +184,7 @@ export default function Voluntarios() {
                   <th className="w-16">Ativo</th>
                   <th className="flex-1 pl-6">Nome</th>
                   <th className="w-44">CPF</th>
-                  <th className="w-44">Registro</th>
+                  <th className="w-32">Registro</th>
                   <th className="w-40 text-center">Ações</th>
                 </tr>
               </thead>
@@ -203,7 +203,7 @@ export default function Voluntarios() {
                       {voluntario.nome}
                     </td>
                     <td className="w-44">{cpfMask(voluntario.cpf)}</td>
-                    <td className="w-44">
+                    <td className="w-32">
                       {new Date(voluntario.createdAt).toLocaleDateString(
                         "pt-BR"
                       )}
