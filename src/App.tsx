@@ -7,6 +7,8 @@ import Voluntarios from "./pages/Voluntarios";
 import Animais from "./pages/Animais";
 import CadastroAnimal from "./pages/CadastroAnimal";
 import Doacoes from "./pages/Doacoes";
+import CadastroTutor from "./pages/CadastroTutor";
+import Tutores from "./pages/Tutores";
 
 function App() {
   return (
@@ -21,17 +23,29 @@ function App() {
           }
         >
           <Route index element={<h1>index</h1>} />
+
           <Route path="voluntarios" element={<Voluntarios />} />
+
           <Route path="animais">
             <Route index element={<Animais />} />
             <Route path="novo" element={<CadastroAnimal />} />
             <Route path=":animalId" element={<h1>edição animal</h1>} />
           </Route>
+
           <Route path="adocoes" element={<h1>adocoes</h1>} />
-          <Route path="tutores" element={<h1>tutores</h1>} />
+
+          <Route path="tutores">
+            <Route index element={<Tutores />} />
+            <Route path="novo" element={<CadastroTutor />} />
+            <Route path=":tutorId" element={<h1>edição tutor</h1>} />
+          </Route>
+
           <Route path="sobre" element={<h1>sobre</h1>} />
+
           <Route path="perfil" element={<h1>perfil</h1>} />
+
           <Route path="doacoes" element={<Doacoes />} />
+
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroVoluntario />} />

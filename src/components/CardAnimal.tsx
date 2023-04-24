@@ -1,11 +1,9 @@
 import {
-  ArrowSquareOut,
   Cat,
   Dog,
   Feather,
   GenderFemale,
   GenderMale,
-  PencilLine,
 } from "@phosphor-icons/react";
 import { IAnimal } from "../pages/Animais";
 import moment from "moment";
