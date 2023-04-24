@@ -99,7 +99,7 @@ export default function CadastroAnimal() {
         className="text-teal-500 hover:underline font-medium hover:text-slate-700"
       >
         <ArrowLeft size={18} className="inline-block mr-2" />
-        Voltar para a lista de animais
+        Voltar
       </NavLink>
       <form
         onSubmit={handleSubmit(onSubmit)}

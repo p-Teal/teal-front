@@ -28,7 +28,7 @@ export default function CardAnimal({ animal, clickCard }: CardProps) {
   }
   animalStatus = animalStatus.charAt(0).toUpperCase() + animalStatus.slice(1);
 
-  const classNameCard = `my-8 rounded-lg shadow-lg shadow-slate-400 duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus}`;
+  const classNameCard = `my-4 rounded-lg shadow-lg shadow-slate-400 duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus}`;
 
   const data = animal.dataEntrada;
 
