@@ -43,10 +43,10 @@ const tutorSchema = z.object({
     .number()
     .min(1, "Tamanho da família precisa ser maior que 0"),
   profissao: z
-    .string()
-    .trim()
-    .min(3, "Profissão precisa ter no mínimo 3 caracteres")
-    .max(50, "Profissão precisa ter no máximo 50 caracteres"),
+    .optional(
+      z.string().trim().min(10, "Profissão precisa ter no mínimo 10 caracteres").max(50, "Profissão precisa ter no máximo 50 caracteres")
+    )
+    .or(z.literal("")),
   numCriancas: z
     .number()
     .min(0, "Número de crianças precisa ser maior ou igual a 0"),

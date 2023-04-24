@@ -3,8 +3,10 @@ import tutorSchema from "../schemas/tutorSchema";
 import { useAppContext } from "../context/appContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "@phosphor-icons/react";
+import { toast } from "react-toastify";
+import { createTutor } from "../services/tutorService";
 
 
 type FormProps = z.infer<typeof tutorSchema>;
@@ -31,6 +33,48 @@ export default function CadastroTutor() {
     resolver: zodResolver(tutorSchema),
     shouldFocusError: true,
   });
+  const nav = useNavigate();
+
+  const onSubmit = async (data: FormProps) => {
+
+    const dataToSend = {
+      ...data,
+    };
+
+    const dataNascimentoFormatted = dataToSend.dataNascimento
+      ? dataToSend.dataNascimento.split("-").reverse().join("/")
+      : dataToSend.dataNascimento;
+
+    dataToSend.dataNascimento = dataNascimentoFormatted;
+
+    if (dataToSend.dataNascimento === "") {
+      delete dataToSend.dataNascimento;
+    }
+
+    if (dataToSend.descricao === "") {
+      delete dataToSend.descricao;
+    }
+
+    if (dataToSend.profissao === "") {
+      delete dataToSend.profissao;
+    }
+
+    const resp = await createTutor(dataToSend);
+
+    if (resp.status === 201) {
+      toast.success("Tutor cadastrado com sucesso!");
+      reset();
+      setTimeout(() => {
+        return nav("/tutores");
+      }, 2000);
+    } else if (resp.status === 401) {
+      toast.error("Sessão expirada, faça login novamente para continuar.");
+      return logoutContext();
+    } else {
+      toast.error(`Erro! ${resp.data.mensagem}`);
+    }
+    return;
+  };
 
   return (
     <>
@@ -45,7 +89,7 @@ export default function CadastroTutor() {
         Voltar
       </NavLink>
       <form
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
         autoComplete="off"
       >
@@ -232,7 +276,7 @@ export default function CadastroTutor() {
             <input
               type="number"
               id="tamanhoFamilia"
-              {...register("tamanhoFamilia")}
+              {...register("tamanhoFamilia", { valueAsNumber: true })}
               className={checkErrorInput(errors.tamanhoFamilia?.message)}
             />
             {errors.tamanhoFamilia && (
@@ -249,7 +293,7 @@ export default function CadastroTutor() {
             <input
               type="number"
               id="numCriancas"
-              {...register("numCriancas")}
+              {...register("numCriancas", { valueAsNumber: true })}
               className={checkErrorInput(errors.numCriancas?.message)}
             />
             {errors.numCriancas && (
@@ -266,7 +310,7 @@ export default function CadastroTutor() {
             <input
               type="number"
               id="numAnimais"
-              {...register("numAnimais")}
+              {...register("numAnimais", { valueAsNumber: true })}
               className={checkErrorInput(errors.numAnimais?.message)}
             />
             {errors.numAnimais && (
