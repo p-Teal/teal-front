@@ -11,10 +11,9 @@ import { NavLink } from "react-router-dom";
 
 interface CardProps {
   animal: IAnimal;
-  clickCard: (animal: IAnimal) => void;
 }
 
-export default function CardAnimal({ animal, clickCard }: CardProps) {
+export default function CardAnimal({ animal }: CardProps) {
   let animalStatus = animal.status;
   let colorStatus;
   if (animalStatus === "adotado") {
@@ -28,7 +27,7 @@ export default function CardAnimal({ animal, clickCard }: CardProps) {
   }
   animalStatus = animalStatus.charAt(0).toUpperCase() + animalStatus.slice(1);
 
-  const classNameCard = `my-4 rounded-lg shadow-lg shadow-slate-400 duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus}`;
+  const classNameCard = `mb-4 rounded-lg shadow-lg shadow-slate-400 duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus}`;
 
   const data = animal.dataEntrada;
 
@@ -48,10 +47,10 @@ export default function CardAnimal({ animal, clickCard }: CardProps) {
   }
 
   return (
-    <div
+    <NavLink
+      to={`/animais/${animal.animalId}`}
       key={animal.animalId}
       className={classNameCard}
-      onClick={() => clickCard(animal)}
     >
       <img
         src={animal.urlFoto}
@@ -88,12 +87,8 @@ export default function CardAnimal({ animal, clickCard }: CardProps) {
         <p className="overflow-hidden whitespace-nowrap text-ellipsis pr-3 text-sm">
           {dias}
         </p>
-        <NavLink
-          className="bg-white px-2 py-1 flex items-center justify-center rounded-lg hover:bg-slate-200"
-          to={`/animais/${animal.animalId}`}>
-          <p className="text-xs font-medium text-black">Editar</p>
-        </NavLink>
+        <p className="font-medium text-right text-sm">Porte {animal.porte}</p>
       </div>
-    </div>
+    </NavLink>
   );
 }

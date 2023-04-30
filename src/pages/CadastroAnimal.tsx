@@ -102,6 +102,7 @@ export default function CadastroAnimal() {
         Voltar
       </NavLink>
       <form
+        autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
       >
@@ -229,6 +230,42 @@ export default function CadastroAnimal() {
               </span>
             )}
           </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="porte" className="text-slate-700">
+              Porte *
+            </label>
+            <div className="relative inline-block w-[320px] text-slate-700">
+              <select
+                id="porte"
+                {...register("porte")}
+                className={`${checkErrorInput(
+                  errors.porte?.message
+                )} appearance-none pr-6`}
+                defaultValue=""
+              >
+                <option disabled value="">
+                  Selecione
+                </option>
+                <option value="pequeno">Pequeno</option>
+                <option value="médio">Médio</option>
+                <option value="grande">Grande</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            {errors.porte && (
+              <span className="text-red-600 text-sm px-1">
+                {errors.porte.message}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="xl:min-h-full bg-teal-500 w-1 rounded-lg mr-12"></div>
@@ -302,6 +339,7 @@ export default function CadastroAnimal() {
             </label>
             <input
               type="file"
+              accept="image/*"
               id="urlFoto"
               {...register("urlFoto")}
               className="file:mr-3 file:py-2 file:px-4

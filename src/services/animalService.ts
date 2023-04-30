@@ -22,3 +22,12 @@ export const getAnimais = async () => {
     return error.response;
   }
 };
+
+export const getAnimal = async (id: string) => {
+  try {
+    const response = await service.get(`/getAnimal/${id}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

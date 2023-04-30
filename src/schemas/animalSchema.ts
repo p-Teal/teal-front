@@ -29,6 +29,12 @@ const animalSchema = z.object({
     .trim()
     .min(3, "Raça precisa ter no mínimo 3 caracteres")
     .max(50, "Raça precisa ter no máximo 50 caracteres"),
+  porte: z
+    .string()
+    .refine(
+      (value) => ["pequeno", "médio", "grande"].includes(value),
+      "Selecione uma opção válida"
+    ),
   dataNascimento: z
     .optional(
       z

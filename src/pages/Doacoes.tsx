@@ -25,11 +25,11 @@ interface IDoacaoResponse {
 const circleIcon = (ativo: boolean) => {
   if (ativo) {
     return (
-      <div className="rounded-full bg-teal-700 h-4 w-4 m-1 shadow-teal-700 shadow-md"></div>
+      <div className="rounded-full bg-teal-700 h-4 w-4 m-1 shadow-teal-700 shadow-sm"></div>
     );
   }
   return (
-    <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-md"></div>
+    <div className="rounded-full bg-red-600 h-4 w-4 m-1 shadow-red-600 shadow-sm"></div>
   );
 };
 

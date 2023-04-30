@@ -21,6 +21,7 @@ export interface IAnimal {
   _id: string;
   descricao?: string;
   createdAt: string;
+  porte: string;
 }
 
 interface IAnimalResponse {
@@ -38,19 +39,6 @@ export default function Animais() {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [animalInfo, setAnimalInfo] = useState<IAnimal | null>(null);
-
-  const openCardInfo = (animalParam: IAnimal) => {
-    setAnimalInfo(animalParam);
-    console.log(animalParam);
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setAnimalInfo(null);
-  };
 
   const getAnimaisData = async () => {
     setLoading(true);
@@ -96,7 +84,7 @@ export default function Animais() {
 
       {animais.totalAnimais > 0 && (
         <>
-          <p className="text-xl text-slate-700">
+          <p className="text-xl text-slate-700 mb-8">
             Total de animais cadastrados: {animais.totalAnimais}
           </p>
 
@@ -105,21 +93,11 @@ export default function Animais() {
               <CardAnimal
                 animal={animal}
                 key={animal.animalId}
-                clickCard={() => openCardInfo(animal)}
               />
             ))}
           </div>
         </>
       )}
-      <Modal
-        isOpen={modalOpen}
-        onClose={handleModalClose}
-        title="Detalhes do animal"
-      >
-        <pre className="overflow-y-auto pb-6">
-          {animalInfo && JSON.stringify(animalInfo, null, 2)}
-        </pre>
-      </Modal>
     </>
   );
 }
