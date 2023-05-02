@@ -31,3 +31,14 @@ export const getAnimal = async (id: string) => {
     return error.response;
   }
 };
+
+export const updateFotoAnimal = async (id: string, urlFoto: string) => {
+  try {
+    const response = await service.patch(`/updateFoto/${id}`, { urlFoto });
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+

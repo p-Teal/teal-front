@@ -9,6 +9,7 @@ import { getAnimal } from "../services/animalService";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import EdicaoAnimal from "../components/EdicaoAnimal";
+import EditarFotoAnimal from "../components/EditarFotoAnimal";
 
 interface TabProps {
   active: boolean;
@@ -82,7 +83,7 @@ export default function Animal() {
   const tabs = [
     {
       label: "Editar Foto",
-      content: <h1><img src={urlFoto} /></h1>
+      content: <EditarFotoAnimal urlFoto={urlFoto} setUrl={setUrlFoto} />
     },
     {
       label: "Editar Dados",
