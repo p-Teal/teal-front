@@ -18,7 +18,7 @@ interface Props {
 
 const iconClasses = "text-white mr-2";
 
-export function ChipRegistro({ registro, deleteRegistroFunction }: Props) {
+export default function ChipRegistro({ registro, deleteRegistroFunction }: Props) {
   const [expand, setExpand] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
@@ -27,17 +27,17 @@ export function ChipRegistro({ registro, deleteRegistroFunction }: Props) {
       case "vacina":
         return <Syringe className={iconClasses} size={28} />;
       case "veterinário":
-        return <Stethoscope />;
+        return <Stethoscope className={iconClasses} size={28} />;
       case "banho":
-        return <Shower />;
+        return <Shower className={iconClasses} size={28} />;
       case "tosa":
-        return <Scissors />;
+        return <Scissors className={iconClasses} size={28} />;
       case "medicação":
-        return <Pill />;
+        return <Pill className={iconClasses} size={28} />;
       case "outro":
-        return <NotePencil />;
+        return <NotePencil className={iconClasses} size={28} />;
       default:
-        return <NotePencil />;
+        return <NotePencil className={iconClasses} size={28} />;
     }
   }
 
@@ -49,8 +49,14 @@ export function ChipRegistro({ registro, deleteRegistroFunction }: Props) {
     setIsOpenDelete(false);
   }
 
+  function observacaoHandler(ob: string) {
+    console.log(ob);
+    const newText = ob.replace(/\n/g, "<br />");
+    return newText;
+  }
+
   return (
-    <div className="flex flex-col w-full bg-teal-800 rounded-lg">
+    <div className="flex flex-col w-full bg-teal-800 rounded-lg h-fit">
       <div className="flex flex-row justify-between items-center px-4 py-2 text-white text-lg">
         <div className="flex flex-row items-center">
           {checkRegistroTypeAndReturnIcon()}
@@ -72,12 +78,12 @@ export function ChipRegistro({ registro, deleteRegistroFunction }: Props) {
       </div>
       {expand && (
         <div className="flex flex-col px-4 py-2">
-          <p className="text-white">{registro.observacao}</p>
+          <p className="text-white" dangerouslySetInnerHTML={{ __html: observacaoHandler(registro.observacao) }}></p>
           {registro.anexo && (
-            <p className="my-4">
-              Anexo:{" "}
+            <p className="my-4 text-white">
+              Anexo:
               <a
-                className="underline"
+                className="underline ml-4"
                 href={registro.anexo}
                 target="_blank"
                 rel="noreferrer"

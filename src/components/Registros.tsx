@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { deleteRegistro, getRegistros } from "../services/registroService";
 import { useAppContext } from "../context/appContext";
 import { toast } from "react-toastify";
-import { ChipRegistro } from "./ChipRegistro";
+import ChipRegistro from "./ChipRegistro";
+import ModalRegistro from "./ModalRegistro";
 
 interface Props {
   animalId: string | undefined;
@@ -28,11 +29,16 @@ const sessionMessage = "Sessão expirada, faça login novamente para continuar."
 export function Registros({ animalId }: Props) {
   const { logoutContext } = useAppContext();
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState("");
   const [registros, setRegistros] = useState<IRegistroResponse>({
     registros: [],
     totalRegistros: 0,
   });
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   const getRegistrosByAnimalId = async () => {
     setLoading(true);
@@ -83,23 +89,26 @@ export function Registros({ animalId }: Props) {
           Total de registros cadastrados: {registros.totalRegistros}
         </p>
       )}
-      <button className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded my-8">
+      <button onClick={() => setIsOpen(true)}
+        className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded my-8">
         Adicionar Registro
       </button>
 
       {registros.totalRegistros > 0 && (
         <>
-          <div className="grid grid-flow-row gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-flow-row gap-8 grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
             {registros.registros.map((registro) => (
               <ChipRegistro
-                registro={registro}
                 key={registro._id}
+                registro={registro}
                 deleteRegistroFunction={deleteRegistroHandler}
               />
             ))}
           </div>
         </>
       )}
+
+      <ModalRegistro isOpen={isOpen} onClose={closeModal} fetchData={getRegistrosByAnimalId} animalId={animalId} />
     </>
   );
 }
