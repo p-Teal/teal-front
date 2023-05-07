@@ -1,14 +1,11 @@
 import { Baby, HouseLine, PawPrint, Person } from "@phosphor-icons/react";
 import { ITutor } from "../pages/Tutores";
-import moment from "moment";
-import { NavLink } from "react-router-dom";
 
 interface CardProps {
   tutor: ITutor;
-  clickCard?: (tutor: ITutor) => void;
 }
 
-export default function CardTutor({ tutor, clickCard }: CardProps) {
+export default function CardTutor({ tutor }: CardProps) {
   let tutorStatus = tutor.status;
   let colorStatus;
   if (tutorStatus === "aprovado") {
@@ -26,10 +23,12 @@ export default function CardTutor({ tutor, clickCard }: CardProps) {
     <div
       key={tutor._id}
       className={classNameCard}
-    // onClick={() => clickCard(tutor)}
+      // onClick={() => clickCard(tutor)}
     >
       <div className="flex flex-row justify-between items-center">
-        <h1 className="text-2xl font-bold text-ellipsis overflow-hidden whitespace-nowrap pr-4">{tutor.nome}</h1>
+        <h1 className="text-2xl font-bold text-ellipsis overflow-hidden whitespace-nowrap pr-4">
+          {tutor.nome}
+        </h1>
         <p>{tutorStatus}</p>
       </div>
       <div className="flex flex-row justify-between items-center">
@@ -37,8 +36,12 @@ export default function CardTutor({ tutor, clickCard }: CardProps) {
         <p className="italic">{tutor.telefone}</p>
       </div>
       <div className="flex flex-row justify-between items-center">
-        <p className="italic text-ellipsis overflow-hidden whitespace-nowrap pr-4">{tutor.endereco}</p>
-        <p className="italic">{tutor.cidade} - {tutor.estado}</p>
+        <p className="italic text-ellipsis overflow-hidden whitespace-nowrap pr-4">
+          {tutor.endereco}
+        </p>
+        <p className="italic">
+          {tutor.cidade} - {tutor.estado}
+        </p>
       </div>
       <div className="flex flex-row items-center font-bold justify-evenly">
         <div className="flex flex-row">

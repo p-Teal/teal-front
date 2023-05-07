@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import EdicaoAnimal from "../components/EdicaoAnimal";
 import EditarFotoAnimal from "../components/EditarFotoAnimal";
+import { Registros } from "../components/Registros";
 
 interface TabProps {
   active: boolean;
@@ -83,17 +84,17 @@ export default function Animal() {
   const tabs = [
     {
       label: "Editar Foto",
-      content: <EditarFotoAnimal urlFoto={urlFoto} setUrl={setUrlFoto} />
+      content: <EditarFotoAnimal urlFoto={urlFoto} setUrl={setUrlFoto} />,
     },
     {
       label: "Editar Dados",
-      content: <EdicaoAnimal animalData={animalData} />
+      content: <EdicaoAnimal animalData={animalData} />,
     },
     {
       label: "Registros",
-      content: <h1>Registros</h1>
-    }
-  ]
+      content: <Registros animalId={param.id} />,
+    },
+  ];
 
   return (
     <>
@@ -121,13 +122,9 @@ export default function Animal() {
       </div>
       {tabs.map((tab, index) => (
         <div key={index} className={`${activeTab !== index ? "hidden" : ""}`}>
-          {loading ? (
-            <h1>Carregando...</h1>
-          ) : (
-            tab.content
-          )}
+          {loading ? <h1>Carregando...</h1> : tab.content}
         </div>
       ))}
     </>
-  )
+  );
 }

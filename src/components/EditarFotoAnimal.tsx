@@ -24,10 +24,7 @@ const fotoSchema = z.object({
 
 type FormProps = z.infer<typeof fotoSchema>;
 
-export default function EditarFotoAnimal({
-  urlFoto,
-  setUrl,
-}: Props) {
+export default function EditarFotoAnimal({ urlFoto, setUrl }: Props) {
   const { logoutContext } = useAppContext();
   const {
     register,
@@ -42,7 +39,6 @@ export default function EditarFotoAnimal({
   const param = useParams<{ id: string }>();
 
   const onSubmit = async (data: FormProps) => {
-    console.log(data);
     const id = param.id;
     const file = data.urlFoto[0];
 
@@ -50,12 +46,11 @@ export default function EditarFotoAnimal({
     const firebaseReturn = await uploadBytes(imageRef, file);
     const url = await getDownloadURL(firebaseReturn.ref);
 
-
     const resp = await updateFotoAnimal(id as string, url);
 
     if (resp.status === 204) {
       toast.success("Foto atualizada com sucesso!");
-      setUrl(url)
+      setUrl(url);
     } else if (resp.status === 401) {
       toast.error("Sessão expirada, faça login novamente para continuar.");
       return logoutContext();
@@ -77,13 +72,25 @@ export default function EditarFotoAnimal({
             <h2 className="text-2xl font-medium text-slate-700">
               Foto Cadastrada
             </h2>
-            <img src={urlFoto} alt="Foto do animal" className="w-[280px] object-cover" />
-            <a href={urlFoto} target="_blank" rel="noreferrer" className="text-teal-500 hover:underline font-medium hover:text-slate-700 w-fit">
+            <img
+              src={urlFoto}
+              alt="Foto do animal"
+              className="w-[280px] object-cover"
+            />
+            <a
+              href={urlFoto}
+              target="_blank"
+              rel="noreferrer"
+              className="text-teal-500 hover:underline font-medium hover:text-slate-700 w-fit"
+            >
               Link da foto
             </a>
           </div>
           <div className="flex flex-col gap-5">
-            <label htmlFor="urlFoto" className="text-2xl font-medium text-slate-700 w-fit">
+            <label
+              htmlFor="urlFoto"
+              className="text-2xl font-medium text-slate-700 w-fit"
+            >
               Atualizar Foto
             </label>
             <input
@@ -113,5 +120,5 @@ export default function EditarFotoAnimal({
         </div>
       </form>
     </>
-  )
+  );
 }
