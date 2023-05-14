@@ -4,6 +4,8 @@ import { useAppContext } from "../context/appContext";
 import { toast } from "react-toastify";
 import ChipRegistro from "./ChipRegistro";
 import ModalRegistro from "./ModalRegistro";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "../utils/firebase";
 
 interface Props {
   animalId: string | undefined;
@@ -16,6 +18,7 @@ export interface IRegistro {
   data: string;
   observacao: string;
   registroId: string;
+  animalId: string;
   anexo?: string;
 }
 
@@ -55,10 +58,19 @@ export function Registros({ animalId }: Props) {
     setLoading(false);
   };
 
-  const deleteRegistroHandler = async (id: string) => {
+  const deleteRegistroHandler = async (
+    id: string,
+    registroId: string,
+    animalId: string,
+    anexo?: string
+  ) => {
     const response = await deleteRegistro(id);
 
     if (response.status === 204) {
+      if (anexo) {
+        const imageRef = ref(storage, `Outros/${animalId}/${registroId}`);
+        await deleteObject(imageRef);
+      }
       toast.success("Registro deletado com sucesso!");
     } else if (response.status === 401) {
       toast.error(sessionMessage);
@@ -89,8 +101,10 @@ export function Registros({ animalId }: Props) {
           Total de registros cadastrados: {registros.totalRegistros}
         </p>
       )}
-      <button onClick={() => setIsOpen(true)}
-        className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded my-8">
+      <button
+        onClick={() => setIsOpen(true)}
+        className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded my-8"
+      >
         Adicionar Registro
       </button>
 
@@ -108,7 +122,12 @@ export function Registros({ animalId }: Props) {
         </>
       )}
 
-      <ModalRegistro isOpen={isOpen} onClose={closeModal} fetchData={getRegistrosByAnimalId} animalId={animalId} />
+      <ModalRegistro
+        isOpen={isOpen}
+        onClose={closeModal}
+        fetchData={getRegistrosByAnimalId}
+        animalId={animalId}
+      />
     </>
   );
 }

@@ -8,7 +8,6 @@ import { ArrowLeft } from "@phosphor-icons/react";
 import { toast } from "react-toastify";
 import { createTutor } from "../services/tutorService";
 
-
 type FormProps = z.infer<typeof tutorSchema>;
 
 const classNameInput =
@@ -36,7 +35,6 @@ export default function CadastroTutor() {
   const nav = useNavigate();
 
   const onSubmit = async (data: FormProps) => {
-
     const dataToSend = {
       ...data,
     };
@@ -276,6 +274,7 @@ export default function CadastroTutor() {
             <input
               type="number"
               id="tamanhoFamilia"
+              defaultValue={0}
               {...register("tamanhoFamilia", { valueAsNumber: true })}
               className={checkErrorInput(errors.tamanhoFamilia?.message)}
             />
@@ -293,6 +292,7 @@ export default function CadastroTutor() {
             <input
               type="number"
               id="numCriancas"
+              defaultValue={0}
               {...register("numCriancas", { valueAsNumber: true })}
               className={checkErrorInput(errors.numCriancas?.message)}
             />
@@ -310,6 +310,7 @@ export default function CadastroTutor() {
             <input
               type="number"
               id="numAnimais"
+              defaultValue={0}
               {...register("numAnimais", { valueAsNumber: true })}
               className={checkErrorInput(errors.numAnimais?.message)}
             />
@@ -358,5 +359,5 @@ export default function CadastroTutor() {
         </div>
       </form>
     </>
-  )
+  );
 }

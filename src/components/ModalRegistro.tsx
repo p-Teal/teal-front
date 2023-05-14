@@ -1,3 +1,4 @@
+import mimeTypes from "mime-types";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../utils/firebase";
@@ -20,10 +21,17 @@ interface ModalProps {
 
 type FormProps = z.infer<typeof registroSchema>;
 
-const Label = ({ children, ...rest }: { children: React.ReactNode, [key: string]: any; }) => (
-  <label className="inline-block text-base text-slate-700 w-fit" {...rest}>{children}</label>
+const Label = ({
+  children,
+  ...rest
+}: {
+  children: React.ReactNode;
+  [key: string]: any;
+}) => (
+  <label className="inline-block text-base text-slate-700 w-fit" {...rest}>
+    {children}
+  </label>
 );
-
 
 const classNameInput =
   "border-2 border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-full hover:border-teal-500 hover:shadow-md";
@@ -92,10 +100,19 @@ export default function ModalRegistro({
       delete dataToSend.anexo;
     } else if (dataToSend.anexo.length > 0) {
       const file = dataToSend.anexo[0];
-      const imageRef = ref(storage, `Outros/${uuidValue}`);
+      const ext = mimeTypes.extension(file.type);
+      const imageRef = ref(storage, `Outros/${animalId}/${uuidValue}`);
       const firebaseReturn = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(firebaseReturn.ref);
-      dataToSend.anexo = url;
+      console.log(ext);
+      if (ext !== "pdf" && ext !== "png" && ext !== "jpg" && ext !== "jpeg") {
+        toast.error(
+          "Formato de arquivo inválido! Os formatos aceitos são: pdf, png, jpg e jpeg."
+        );
+        return;
+      }
+      const anexoC = `${url}.${ext}`;
+      dataToSend.anexo = anexoC;
     }
     console.log(dataToSend);
     const resp = await createRegistro(dataToSend);
@@ -111,7 +128,7 @@ export default function ModalRegistro({
     }
     reset();
     onClose();
-  }
+  };
 
   return (
     <>
@@ -121,13 +138,15 @@ export default function ModalRegistro({
             ref={modalRef}
             className="bg-white rounded-lg shadow-lg w-full max-w-sm sm:max-w-md max-h-screen overflow-y-auto"
           >
-            <div
-              className="border-b px-4 py-2 flex justify-between items-center">
+            <div className="border-b px-4 py-2 flex justify-between items-center">
               <h3 className="font-semibold text-2xl">Cadastrar Registro</h3>
               <X size={28} className="cursor-pointer" onClick={onClose} />
             </div>
             <div className="p-6">
-              <form onSubmit={handleSubmit(handleFormSubmit)} autoComplete="off">
+              <form
+                onSubmit={handleSubmit(handleFormSubmit)}
+                autoComplete="off"
+              >
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="titulo">Título</Label>
                   <input
@@ -141,7 +160,6 @@ export default function ModalRegistro({
                       {errors.titulo.message}
                     </p>
                   )}
-
 
                   <Label htmlFor="tipo">Tipo</Label>
                   <div className="relative inline-block w-full text-slate-700">
@@ -206,7 +224,7 @@ export default function ModalRegistro({
                     </p>
                   )}
 
-                  <Label htmlFor="anexo">Anexo</Label>
+                  <Label htmlFor="anexo">Anexo - pdf ou imagem</Label>
                   <input
                     type="file"
                     id="anexo"
@@ -243,5 +261,5 @@ export default function ModalRegistro({
         </div>
       )}
     </>
-  )
+  );
 }

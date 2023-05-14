@@ -5,6 +5,8 @@ import editAnimalSchema from "../schemas/editAnimalSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
+import { updateAnimal } from "../services/animalService";
+import { useNavigate } from "react-router-dom";
 
 type FormProps = z.infer<typeof editAnimalSchema>;
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
@@ -21,9 +23,11 @@ const checkErrorInput = (message?: string) => {
 
 interface Props {
   animalData?: FormProps;
+  animalId?: string;
 }
 
-export default function EdicaoAnimal({ animalData }: Props) {
+export default function EdicaoAnimal({ animalData, animalId }: Props) {
+  const { logoutContext } = useAppContext();
   const {
     register,
     handleSubmit,
@@ -34,6 +38,7 @@ export default function EdicaoAnimal({ animalData }: Props) {
     resolver: zodResolver(editAnimalSchema),
     shouldFocusError: true,
   });
+  const nav = useNavigate();
 
   useEffect(() => {
     if (animalData) {
@@ -41,11 +46,50 @@ export default function EdicaoAnimal({ animalData }: Props) {
     }
   }, [animalData, reset]);
 
+  const onSubmit = async (data: FormProps) => {
+    const dataToSend = {
+      ...data,
+    };
+
+    const dataNascimentoFormatted = dataToSend.dataNascimento
+      ? dataToSend.dataNascimento.split("-").reverse().join("/")
+      : dataToSend.dataNascimento;
+    const dataEntradaFormatted = dataToSend.dataEntrada
+      ? dataToSend.dataEntrada.split("-").reverse().join("/")
+      : dataToSend.dataEntrada;
+
+    dataToSend.dataNascimento = dataNascimentoFormatted;
+    dataToSend.dataEntrada = dataEntradaFormatted;
+
+    if (dataToSend.dataNascimento === "") {
+      delete dataToSend.dataNascimento;
+    }
+
+    if (dataToSend.descricao === "") {
+      delete dataToSend.descricao;
+    }
+
+    const resp = await updateAnimal(animalId as string, dataToSend);
+
+    if (resp.status === 204) {
+      toast.success("Animal atualizado com sucesso!");
+      setTimeout(() => {
+        return nav("/animais");
+      }, 2000);
+    } else if (resp.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
+    } else {
+      toast.error(`Erro! ${resp.data.mensagem}`);
+    }
+    return;
+  };
+
   return (
     <>
       <form
         autoComplete="off"
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
       >
         <div className="flex flex-col min-w-1/2 w-1/2 pt-2 gap-5">
@@ -326,5 +370,5 @@ export default function EdicaoAnimal({ animalData }: Props) {
         </div>
       </form>
     </>
-  )
+  );
 }

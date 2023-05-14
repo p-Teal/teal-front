@@ -88,7 +88,7 @@ export default function Animal() {
     },
     {
       label: "Editar Dados",
-      content: <EdicaoAnimal animalData={animalData} />,
+      content: <EdicaoAnimal animalData={animalData} animalId={param.id} />,
     },
     {
       label: "Registros",

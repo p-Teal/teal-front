@@ -13,31 +13,39 @@ import Modal from "./Modal";
 
 interface Props {
   registro: IRegistro;
-  deleteRegistroFunction: (id: string) => Promise<any>;
+  deleteRegistroFunction: (
+    id: string,
+    registroId: string,
+    animalId: string,
+    anexo?: string
+  ) => Promise<any>;
 }
 
 const iconClasses = "text-white mr-2";
 
-export default function ChipRegistro({ registro, deleteRegistroFunction }: Props) {
+export default function ChipRegistro({
+  registro,
+  deleteRegistroFunction,
+}: Props) {
   const [expand, setExpand] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
   function checkRegistroTypeAndReturnIcon() {
     switch (registro.tipo) {
       case "vacina":
-        return <Syringe className={iconClasses} size={28} />;
+        return <Syringe className={iconClasses} size={24} />;
       case "veterinário":
-        return <Stethoscope className={iconClasses} size={28} />;
+        return <Stethoscope className={iconClasses} size={24} />;
       case "banho":
-        return <Shower className={iconClasses} size={28} />;
+        return <Shower className={iconClasses} size={24} />;
       case "tosa":
-        return <Scissors className={iconClasses} size={28} />;
+        return <Scissors className={iconClasses} size={24} />;
       case "medicação":
-        return <Pill className={iconClasses} size={28} />;
+        return <Pill className={iconClasses} size={24} />;
       case "outro":
-        return <NotePencil className={iconClasses} size={28} />;
+        return <NotePencil className={iconClasses} size={24} />;
       default:
-        return <NotePencil className={iconClasses} size={28} />;
+        return <NotePencil className={iconClasses} size={24} />;
     }
   }
 
@@ -78,7 +86,12 @@ export default function ChipRegistro({ registro, deleteRegistroFunction }: Props
       </div>
       {expand && (
         <div className="flex flex-col px-4 py-2">
-          <p className="text-white" dangerouslySetInnerHTML={{ __html: observacaoHandler(registro.observacao) }}></p>
+          <p
+            className="text-white"
+            dangerouslySetInnerHTML={{
+              __html: observacaoHandler(registro.observacao),
+            }}
+          ></p>
           {registro.anexo && (
             <p className="my-4 text-white">
               Anexo:
@@ -87,6 +100,7 @@ export default function ChipRegistro({ registro, deleteRegistroFunction }: Props
                 href={registro.anexo}
                 target="_blank"
                 rel="noreferrer"
+                download={true}
               >
                 Clique aqui para abrir.
               </a>
@@ -113,7 +127,12 @@ export default function ChipRegistro({ registro, deleteRegistroFunction }: Props
           <button
             className="bg-teal-500 text-white rounded-lg px-6 py-2 mx-2 hover:bg-teal-600"
             onClick={() => {
-              deleteRegistroFunction(registro._id);
+              deleteRegistroFunction(
+                registro._id,
+                registro.registroId,
+                registro.animalId,
+                registro?.anexo
+              );
             }}
           >
             Sim
