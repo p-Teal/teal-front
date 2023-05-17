@@ -6,7 +6,6 @@ import { Plus } from "@phosphor-icons/react";
 import { NavLink } from "react-router-dom";
 import CardTutor from "../components/CardTutor";
 
-
 export interface ITutor {
   _id: string;
   nome: string;
@@ -69,7 +68,7 @@ export default function Tutores() {
         </h1>
         <NavLink
           to="/tutores/novo"
-          className="bg-teal-500 text-2xl text-white rounded-lg py-3 sm:mr-5 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md"
+          className="bg-teal-500 text-2xl text-white rounded-lg py-3 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md"
         >
           <Plus size={32} />
           Cadastrar
@@ -88,7 +87,7 @@ export default function Tutores() {
             Total de tutores cadastrados: {tutores.totalTutores}
           </p>
 
-          <div className="grid grid-flow-row gap-6 sm:grid-cols-1 md:grid-cols-2">
+          <div className="grid grid-flow-row gap-6 sm:grid-cols-1 xl:grid-cols-2">
             {tutores.tutores.map((tutor) => (
               <CardTutor tutor={tutor} key={tutor._id} />
             ))}
@@ -96,5 +95,5 @@ export default function Tutores() {
         </>
       )}
     </>
-  )
+  );
 }

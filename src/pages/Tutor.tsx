@@ -1,12 +1,9 @@
 import { ArrowLeft } from "@phosphor-icons/react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
-import { getAnimal } from "../services/animalService";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import EdicaoAnimal from "../components/EdicaoAnimal";
-import EditarFotoAnimal from "../components/EditarFotoAnimal";
-import { Registros } from "../components/Registros";
+import { getTutor } from "../services/tutorService";
 
 interface TabProps {
   active: boolean;
@@ -29,76 +26,65 @@ const Tab = ({ active, onClick, children }: TabProps) => {
 
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
-export default function Animal() {
+export default function Tutor() {
   const { logoutContext } = useAppContext();
   const param = useParams<{ id: string }>();
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [animalData, setAnimalData] = useState();
-  const [urlFoto, setUrlFoto] = useState("");
+  const [tutorData, setTutorData] = useState();
+  // const [urlFoto, setUrlFoto] = useState("");
 
   const [activeTab, setActiveTab] = useState(0);
 
-  const getAnimalData = async () => {
+  const getTutorData = async () => {
     setLoading(true);
     if (param.id) {
-      const response = await getAnimal(param.id);
+      const response = await getTutor(param.id);
       setLoading(false);
       if (response.status === 200) {
-        const { dataNascimento, dataEntrada } = response.data.animal;
+        const { dataNascimento } = response.data.tutor;
         if (dataNascimento) {
-          response.data.animal.dataNascimento = dataNascimento
+          response.data.tutor.dataNascimento = dataNascimento
             .split("/")
             .reverse()
             .join("-");
         }
-        if (dataEntrada) {
-          response.data.animal.dataEntrada = dataEntrada
-            .split("/")
-            .reverse()
-            .join("-");
-        }
-        setAnimalData(response.data.animal);
-        setUrlFoto(response.data.animal.urlFoto);
-        console.log(response.data);
+        setTutorData(response.data.tutor);
+        // setUrlFoto(response.data.animal.urlFoto);
       } else if (response.status === 401) {
         toast.error(sessionMessage);
         return logoutContext();
       } else {
-        toast.error(`Erro ao carregar animal: ${response.data.mensagem}`);
-        return nav("/animais");
+        toast.error(`Erro ao buscar tutor: ${response.data.mensagem}`);
+        return nav("/tutores");
       }
     } else {
-      nav("/animais");
+      nav("/tutores");
     }
   };
 
   useEffect(() => {
-    getAnimalData();
+    getTutorData();
   }, []);
 
   const tabs = [
     {
       label: "Editar Foto",
-      content: <EditarFotoAnimal urlFoto={urlFoto} setUrl={setUrlFoto} />,
+      // content: <EditarFotoAnimal urlFoto={urlFoto} setUrl={setUrlFoto} />,
     },
     {
       label: "Editar Dados",
-      content: <EdicaoAnimal animalData={animalData} animalId={param.id} />,
-    },
-    {
-      label: "Registros",
-      content: <Registros animalId={param.id} />,
+      // content: <EdicaoAnimal animalData={animalData} animalId={param.id} />,
     },
   ];
 
   return (
     <>
       <h1 className="sm:text-5xl text-2xl font-medium text-slate-700 pb-8">
-        Editar Animal
+        Editar Tutor
       </h1>
       <NavLink
-        to="/animais"
+        to="/tutores"
         className="text-teal-500 hover:underline font-medium hover:text-slate-700"
       >
         <ArrowLeft size={18} className="inline-block mr-2" />
@@ -116,11 +102,11 @@ export default function Animal() {
           </Tab>
         ))}
       </div>
-      {tabs.map((tab, index) => (
+      {/* {tabs.map((tab, index) => (
         <div key={index} className={`${activeTab !== index ? "hidden" : ""}`}>
           {loading ? <h1>Carregando...</h1> : tab.content}
         </div>
-      ))}
+      ))} */}
     </>
   );
 }

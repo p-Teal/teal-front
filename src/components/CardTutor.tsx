@@ -1,5 +1,7 @@
 import { Baby, HouseLine, PawPrint, Person } from "@phosphor-icons/react";
 import { ITutor } from "../pages/Tutores";
+import { NavLink } from "react-router-dom";
+import { cpfMask } from "../utils/cpfmask";
 
 interface CardProps {
   tutor: ITutor;
@@ -20,10 +22,10 @@ export default function CardTutor({ tutor }: CardProps) {
   const classNameCard = `mb-2 rounded-lg duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus} bg-slate-300 p-2 text-slate-700 flex flex-col gap-1`;
 
   return (
-    <div
+    <NavLink
       key={tutor._id}
+      to={`/tutores/${tutor._id}`}
       className={classNameCard}
-      // onClick={() => clickCard(tutor)}
     >
       <div className="flex flex-row justify-between items-center">
         <h1 className="text-2xl font-bold text-ellipsis overflow-hidden whitespace-nowrap pr-4">
@@ -32,7 +34,7 @@ export default function CardTutor({ tutor }: CardProps) {
         <p>{tutorStatus}</p>
       </div>
       <div className="flex flex-row justify-between items-center">
-        <p className="italic">{tutor.cpf}</p>
+        <p className="italic">{cpfMask(tutor.cpf)}</p>
         <p className="italic">{tutor.telefone}</p>
       </div>
       <div className="flex flex-row justify-between items-center">
@@ -61,6 +63,6 @@ export default function CardTutor({ tutor }: CardProps) {
           <p className="pl-2 pr-4">{tutor.numAnimais}</p>
         </div>
       </div>
-    </div>
+    </NavLink>
   );
 }

@@ -1,14 +1,15 @@
-import { z } from "zod";
-import tutorSchema from "../schemas/tutorSchema";
 import { useAppContext } from "../context/appContext";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "@phosphor-icons/react";
+import { z } from "zod";
+import editTutorSchema from "../schemas/editTutorSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
-import { createTutor } from "../services/tutorService";
+import { useEffect, useState } from "react";
+import { updateAnimal } from "../services/animalService";
+import { useNavigate } from "react-router-dom";
 
-type FormProps = z.infer<typeof tutorSchema>;
+type FormProps = z.infer<typeof editTutorSchema>;
+const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 const classNameInput =
   "border-2 border-slate-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent w-[320px] hover:border-teal-500 hover:shadow-md";
@@ -20,7 +21,11 @@ const checkErrorInput = (message?: string) => {
   return classNameInput;
 };
 
-export default function CadastroTutor() {
+interface Props {
+  tutorData: any;
+}
+
+export default function EdicaoTutor({ tutorData }: Props) {
   const { logoutContext } = useAppContext();
   const {
     register,
@@ -29,65 +34,21 @@ export default function CadastroTutor() {
     reset,
   } = useForm<FormProps>({
     mode: "onSubmit",
-    resolver: zodResolver(tutorSchema),
+    resolver: zodResolver(editTutorSchema),
     shouldFocusError: true,
   });
   const nav = useNavigate();
 
-  const onSubmit = async (data: FormProps) => {
-    const dataToSend = {
-      ...data,
-    };
-
-    const dataNascimentoFormatted = dataToSend.dataNascimento
-      ? dataToSend.dataNascimento.split("-").reverse().join("/")
-      : dataToSend.dataNascimento;
-
-    dataToSend.dataNascimento = dataNascimentoFormatted;
-
-    if (dataToSend.dataNascimento === "") {
-      delete dataToSend.dataNascimento;
+  useEffect(() => {
+    if (tutorData) {
+      reset(tutorData);
     }
-
-    if (dataToSend.descricao === "") {
-      delete dataToSend.descricao;
-    }
-
-    if (dataToSend.profissao === "") {
-      delete dataToSend.profissao;
-    }
-
-    const resp = await createTutor(dataToSend);
-
-    if (resp.status === 201) {
-      toast.success("Tutor cadastrado com sucesso!");
-      reset();
-      setTimeout(() => {
-        return nav("/tutores");
-      }, 2000);
-    } else if (resp.status === 401) {
-      toast.error("Sessão expirada, faça login novamente para continuar.");
-      return logoutContext();
-    } else {
-      toast.error(`Erro! ${resp.data.mensagem}`);
-    }
-    return;
-  };
+  }, [tutorData, reset]);
 
   return (
     <>
-      <h1 className="sm:text-5xl text-2xl font-medium text-slate-700 pb-8">
-        Cadastro de Tutor
-      </h1>
-      <NavLink
-        to="/tutores"
-        className="text-teal-500 hover:underline font-medium hover:text-slate-700"
-      >
-        <ArrowLeft size={18} className="inline-block mr-2" />
-        Voltar
-      </NavLink>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        // onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
         autoComplete="off"
       >
@@ -102,6 +63,7 @@ export default function CadastroTutor() {
             <input
               type="text"
               id="cpf"
+              disabled
               {...register("cpf")}
               className={checkErrorInput(errors.cpf?.message)}
             />
@@ -342,18 +304,10 @@ export default function CadastroTutor() {
           <div className="flex flex-row gap-6 items-center pt-4">
             <button
               type="submit"
-              className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-5 rounded w-28"
+              className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-5 rounded w-[320px]"
               disabled={isSubmitting}
             >
-              Cadastrar
-            </button>
-            <button
-              type="reset"
-              className="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-5 rounded w-28"
-              onClick={() => reset()}
-              disabled={isSubmitting}
-            >
-              Limpar
+              Atualizar
             </button>
           </div>
         </div>

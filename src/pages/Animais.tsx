@@ -69,7 +69,7 @@ export default function Animais() {
         </h1>
         <NavLink
           to="/animais/novo"
-          className="bg-teal-500 text-2xl text-white rounded-lg py-3 sm:mr-5 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md"
+          className="bg-teal-500 text-2xl text-white rounded-lg py-3 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md"
         >
           <Plus size={32} />
           Cadastrar

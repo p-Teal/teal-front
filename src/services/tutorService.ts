@@ -31,3 +31,12 @@ export const createTutor = async (tutor: any) => {
     return error.response;
   }
 };
+
+export const getTutor = async (id: string) => {
+  try {
+    const response = await service.get(`/getTutor/${id}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

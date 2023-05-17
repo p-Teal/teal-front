@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../context/appContext";
 import { toast } from "react-toastify";
-import { deleteDoacao, desativaDoacao, getDoacoes } from "../services/doacaoService";
+import {
+  deleteDoacao,
+  desativaDoacao,
+  getDoacoes,
+} from "../services/doacaoService";
 import Modal from "../components/Modal";
 import { Plus, ReceiptX, TrashSimple } from "@phosphor-icons/react";
 import ModalDoacao from "../components/ModalDoacao";
@@ -117,7 +121,8 @@ export default function Doacoes() {
         </h1>
         <button
           onClick={() => setOpenModalDoacao(true)}
-          className="bg-teal-500 text-2xl text-white rounded-lg py-3 sm:mr-5 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md">
+          className="bg-teal-500 text-2xl text-white rounded-lg py-3 flex flex-row items-center justify-evenly w-64 hover:bg-teal-600 hover:shadow-md"
+        >
           <Plus size={32} />
           Cadastrar
         </button>
@@ -149,8 +154,9 @@ export default function Doacoes() {
               <tbody>
                 {doacoes.doacoes.map((doacao, index) => (
                   <tr
-                    className={`flex flex-row justify-start py-3 px-8 text-left ${index % 2 === 0 ? "bg-slate-300" : "bg-slate-400"
-                      } hover:bg-teal-200 hover:cursor-pointer`}
+                    className={`flex flex-row justify-start py-3 px-8 text-left ${
+                      index % 2 === 0 ? "bg-slate-300" : "bg-slate-400"
+                    } hover:bg-teal-200 hover:cursor-pointer`}
                     key={doacao._id}
                     onClick={() => setOpenDoacao(doacao)}
                   >
@@ -208,7 +214,11 @@ export default function Doacoes() {
         </div>
       </Modal>
 
-      <ModalDoacao isOpen={openModalDoacao} onClose={closeModalDoacao} fetchData={getDoacoesData} />
+      <ModalDoacao
+        isOpen={openModalDoacao}
+        onClose={closeModalDoacao}
+        fetchData={getDoacoesData}
+      />
     </>
   );
 }

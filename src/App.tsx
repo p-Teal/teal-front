@@ -10,6 +10,7 @@ import Doacoes from "./pages/Doacoes";
 import CadastroTutor from "./pages/CadastroTutor";
 import Tutores from "./pages/Tutores";
 import Animal from "./pages/Animal";
+import Tutor from "./pages/Tutor";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
           <Route path="tutores">
             <Route index element={<Tutores />} />
             <Route path="novo" element={<CadastroTutor />} />
-            <Route path=":tutorId" element={<h1>edição tutor</h1>} />
+            <Route path=":id" element={<Tutor />} />
           </Route>
 
           <Route path="sobre" element={<h1>sobre</h1>} />
@@ -46,7 +47,6 @@ function App() {
           <Route path="perfil" element={<h1>perfil</h1>} />
 
           <Route path="doacoes" element={<Doacoes />} />
-
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroVoluntario />} />
