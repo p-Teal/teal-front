@@ -38,7 +38,7 @@ const AppProvider = ({ children }: AppProps) => {
   const getVoluntarioAndSet = async () => {
     startLoadingApp();
     const response = await getVoluntario();
-
+    
     if (response.status === 200) {
       const { admin, _id, nome, cpf, ativo } = response.data.voluntario;
       dispatch({

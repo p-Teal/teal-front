@@ -23,9 +23,10 @@ const checkErrorInput = (message?: string) => {
 
 interface Props {
   tutorData: any;
+  tutorId: string | undefined;
 }
 
-export default function EdicaoTutor({ tutorData }: Props) {
+export default function EdicaoTutor({ tutorData, tutorId }: Props) {
   const { logoutContext } = useAppContext();
   const {
     register,
@@ -56,23 +57,44 @@ export default function EdicaoTutor({ tutorData }: Props) {
           <h2 className="text-2xl font-medium text-slate-700">
             Dados do Tutor
           </h2>
+
           <div className="flex flex-col gap-1">
-            <label htmlFor="cpf" className="text-slate-700">
-              CPF *
+            <label htmlFor="status" className="text-slate-700">
+              Aprovação *
             </label>
-            <input
-              type="text"
-              id="cpf"
-              disabled
-              {...register("cpf")}
-              className={checkErrorInput(errors.cpf?.message)}
-            />
-            {errors.cpf && (
+            <div className="relative inline-block w-[320px] text-slate-700">
+              <select
+                id="status"
+                {...register("status")}
+                className={`${checkErrorInput(
+                  errors.status?.message
+                )} appearance-none pr-6`}
+                defaultValue=""
+              >
+                <option disabled value="">
+                  Selecione
+                </option>
+                <option value="aprovado">Aprovado</option>
+                <option value="reprovado">Reprovado</option>
+                <option value="em análise">Em análise</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            {errors.status && (
               <span className="text-red-600 text-sm px-1">
-                {errors.cpf.message}
+                {errors.status.message}
               </span>
             )}
           </div>
+      
           <div className="flex flex-col gap-1">
             <label htmlFor="nome" className="text-slate-700">
               Nome *
@@ -297,6 +319,24 @@ export default function EdicaoTutor({ tutorData }: Props) {
             {errors.descricao && (
               <span className="text-red-600 text-sm px-1">
                 {errors.descricao.message as string}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="cpf" className="text-slate-700">
+              CPF
+            </label>
+            <input
+              type="text"
+              id="cpf"
+              disabled
+              {...register("cpf")}
+              className={checkErrorInput(errors.cpf?.message)}
+            />
+            {errors.cpf && (
+              <span className="text-red-600 text-sm px-1">
+                {errors.cpf.message}
               </span>
             )}
           </div>

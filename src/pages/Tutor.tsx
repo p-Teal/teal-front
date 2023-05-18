@@ -4,6 +4,7 @@ import { useAppContext } from "../context/appContext";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import { getTutor } from "../services/tutorService";
+import EdicaoTutor from "../components/EdicaoTutor";
 
 interface TabProps {
   active: boolean;
@@ -74,7 +75,7 @@ export default function Tutor() {
     },
     {
       label: "Editar Dados",
-      // content: <EdicaoAnimal animalData={animalData} animalId={param.id} />,
+      content: <EdicaoTutor tutorData={tutorData} tutorId={param.id}/>,
     },
   ];
 
@@ -102,11 +103,11 @@ export default function Tutor() {
           </Tab>
         ))}
       </div>
-      {/* {tabs.map((tab, index) => (
+      {tabs.map((tab, index) => (
         <div key={index} className={`${activeTab !== index ? "hidden" : ""}`}>
           {loading ? <h1>Carregando...</h1> : tab.content}
         </div>
-      ))} */}
+      ))}
     </>
   );
 }
