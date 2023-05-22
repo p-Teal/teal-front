@@ -11,7 +11,10 @@ import { useAppContext } from "../context/appContext";
 import { useEffect } from "react";
 
 const schema = z.object({
-  login: z.string().trim().length(11, "CPF precisa ter 11 caracteres"),
+  login: z
+    .string()
+    .trim()
+    .regex(/^\d{11}$/, "CPF precisa ter 11 caracteres numéricos"),
   senha: z
     .string()
     .trim()
@@ -93,11 +96,11 @@ export default function Login() {
           onSubmit={handleSubmit(handleFormSubmit)}
         >
           <LoginInput register={register} error={errors.login?.message} />
-          <PasswordInput register={register} />
+          <PasswordInput register={register} error={errors.senha?.message} />
           <button
             disabled={isSubmitting}
             type="submit"
-            className="bg-teal-500 hover:bg-teal-700 text-white font-bold p-4 rounded my-6 shadow-md flex flex-row justify-center items-center"
+            className="bg-teal-500 hover:bg-teal-700 text-white font-bold p-4 rounded my-6 shadow-md flex flex-row justify-center items-center mt-8"
           >
             <SignIn size={32} />
             {isSubmitting ? "Carregando..." : "Acessar"}

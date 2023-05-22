@@ -4,9 +4,9 @@ import { z } from "zod";
 import editTutorSchema from "../schemas/editTutorSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
-import { updateAnimal } from "../services/animalService";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { updateTutor } from "../services/tutorService";
 
 type FormProps = z.infer<typeof editTutorSchema>;
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
@@ -46,10 +46,49 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
     }
   }, [tutorData, reset]);
 
+  const onSubmit = async (data: FormProps) => {
+    const dataToSend = {
+      ...data,
+    };
+
+    const dataNascimentoFormatted = dataToSend.dataNascimento
+      ? dataToSend.dataNascimento.split("-").reverse().join("/")
+      : dataToSend.dataNascimento;
+
+    dataToSend.dataNascimento = dataNascimentoFormatted;
+
+    if (dataToSend.dataNascimento === "") {
+      delete dataToSend.dataNascimento;
+    }
+
+    if (dataToSend.descricao === "") {
+      delete dataToSend.descricao;
+    }
+
+    if (dataToSend.email === "") {
+      delete dataToSend.email;
+    }
+
+    const resp = await updateTutor(tutorId as string, dataToSend);
+
+    if (resp.status === 204) {
+      toast.success("Tutor atualizado com sucesso!");
+      setTimeout(() => {
+        return nav("/tutores");
+      }, 2000);
+    } else if (resp.status === 401) {
+      toast.error(sessionMessage);
+      return logoutContext();
+    } else {
+      toast.error(`Erro! ${resp.data.mensagem}`);
+    }
+    return;
+  };
+
   return (
     <>
       <form
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex xl:flex-row flex-col gap-4 w-full h-fit pb-4"
         autoComplete="off"
       >
@@ -59,7 +98,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
           </h2>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="status" className="text-slate-700">
+            <label htmlFor="status" className="text-slate-700 w-fit">
               Aprovação *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
@@ -94,9 +133,9 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
               </span>
             )}
           </div>
-      
+
           <div className="flex flex-col gap-1">
-            <label htmlFor="nome" className="text-slate-700">
+            <label htmlFor="nome" className="text-slate-700 w-fit">
               Nome *
             </label>
             <input
@@ -112,7 +151,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="telefone" className="text-slate-700">
+            <label htmlFor="telefone" className="text-slate-700 w-fit">
               Telefone *
             </label>
             <input
@@ -128,7 +167,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="endereco" className="text-slate-700">
+            <label htmlFor="endereco" className="text-slate-700 w-fit">
               Endereço *
             </label>
             <input
@@ -144,7 +183,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="cidade" className="text-slate-700">
+            <label htmlFor="cidade" className="text-slate-700 w-fit">
               Cidade *
             </label>
             <input
@@ -160,7 +199,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="estado" className="text-slate-700">
+            <label htmlFor="estado" className="text-slate-700 w-fit">
               Estado (UF) *
             </label>
             <input
@@ -176,7 +215,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="dataNascimento" className="text-slate-700">
+            <label htmlFor="dataNascimento" className="text-slate-700 w-fit">
               Data de Nascimento
             </label>
             <input
@@ -192,7 +231,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="profissao" className="text-slate-700">
+            <label htmlFor="profissao" className="text-slate-700 w-fit">
               Profissão *
             </label>
             <input
@@ -214,7 +253,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
         <div className="flex flex-col flex-1 pt-2 gap-5">
           <h2 className="text-2xl font-medium text-slate-700">Dados Extras</h2>
           <div className="flex flex-col gap-1">
-            <label htmlFor="tipoMoradia" className="text-slate-700">
+            <label htmlFor="tipoMoradia" className="text-slate-700 w-fit">
               Tipo Moradia *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
@@ -252,7 +291,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="tamanhoFamilia" className="text-slate-700">
+            <label htmlFor="tamanhoFamilia" className="text-slate-700 w-fit">
               Tamanho da Família *
             </label>
             <input
@@ -270,7 +309,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="numCriancas" className="text-slate-700">
+            <label htmlFor="numCriancas" className="text-slate-700 w-fit">
               Número de Crianças *
             </label>
             <input
@@ -288,7 +327,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="numAnimais" className="text-slate-700">
+            <label htmlFor="numAnimais" className="text-slate-700 w-fit">
               Número de Animais *
             </label>
             <input
@@ -306,7 +345,24 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="descricao" className="text-slate-700">
+            <label htmlFor="email" className="text-slate-700 w-fit">
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              {...register("email")}
+              className={checkErrorInput(errors.email?.message)}
+            />
+            {errors.email && (
+              <span className="text-red-600 text-sm px-1">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="descricao" className="text-slate-700 w-fit">
               Descrição
             </label>
             <textarea
@@ -324,7 +380,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="cpf" className="text-slate-700">
+            <label htmlFor="cpf" className="text-slate-700 w-fit">
               CPF
             </label>
             <input

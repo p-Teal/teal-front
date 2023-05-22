@@ -6,6 +6,7 @@ import { getAnimais } from "../services/animalService";
 import { toast } from "react-toastify";
 import CardAnimal from "../components/CardAnimal";
 import Modal from "../components/Modal";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export interface IAnimal {
   animalId: string;
@@ -76,7 +77,7 @@ export default function Animais() {
         </NavLink>
       </div>
 
-      {loading && <p>Carregando...</p>}
+      {loading && <LoadingSpinner />}
       {error && <p className="text-xl text-red-600">{error}</p>}
       {animais.totalAnimais === 0 && (
         <p className="text-xl text-slate-700">Nenhum animal cadastrado.</p>

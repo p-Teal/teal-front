@@ -53,8 +53,8 @@ export default function CadastroTutor() {
       delete dataToSend.descricao;
     }
 
-    if (dataToSend.profissao === "") {
-      delete dataToSend.profissao;
+    if (dataToSend.email === "") {
+      delete dataToSend.email;
     }
 
     const resp = await createTutor(dataToSend);
@@ -96,7 +96,7 @@ export default function CadastroTutor() {
             Dados do Tutor
           </h2>
           <div className="flex flex-col gap-1">
-            <label htmlFor="cpf" className="text-slate-700">
+            <label htmlFor="cpf" className="text-slate-700 w-fit">
               CPF *
             </label>
             <input
@@ -112,7 +112,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="nome" className="text-slate-700">
+            <label htmlFor="nome" className="text-slate-700 w-fit">
               Nome *
             </label>
             <input
@@ -128,7 +128,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="telefone" className="text-slate-700">
+            <label htmlFor="telefone" className="text-slate-700 w-fit">
               Telefone *
             </label>
             <input
@@ -144,7 +144,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="endereco" className="text-slate-700">
+            <label htmlFor="endereco" className="text-slate-700 w-fit">
               Endereço *
             </label>
             <input
@@ -160,7 +160,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="cidade" className="text-slate-700">
+            <label htmlFor="cidade" className="text-slate-700 w-fit">
               Cidade *
             </label>
             <input
@@ -176,7 +176,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="estado" className="text-slate-700">
+            <label htmlFor="estado" className="text-slate-700 w-fit">
               Estado (UF) *
             </label>
             <input
@@ -192,7 +192,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="dataNascimento" className="text-slate-700">
+            <label htmlFor="dataNascimento" className="text-slate-700 w-fit">
               Data de Nascimento
             </label>
             <input
@@ -208,7 +208,7 @@ export default function CadastroTutor() {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="profissao" className="text-slate-700">
+            <label htmlFor="profissao" className="text-slate-700 w-fit">
               Profissão *
             </label>
             <input
@@ -230,7 +230,7 @@ export default function CadastroTutor() {
         <div className="flex flex-col flex-1 pt-2 gap-5">
           <h2 className="text-2xl font-medium text-slate-700">Dados Extras</h2>
           <div className="flex flex-col gap-1">
-            <label htmlFor="tipoMoradia" className="text-slate-700">
+            <label htmlFor="tipoMoradia" className="text-slate-700 w-fit">
               Tipo Moradia *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
@@ -268,7 +268,7 @@ export default function CadastroTutor() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="tamanhoFamilia" className="text-slate-700">
+            <label htmlFor="tamanhoFamilia" className="text-slate-700 w-fit">
               Tamanho da Família *
             </label>
             <input
@@ -286,7 +286,7 @@ export default function CadastroTutor() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="numCriancas" className="text-slate-700">
+            <label htmlFor="numCriancas" className="text-slate-700 w-fit">
               Número de Crianças *
             </label>
             <input
@@ -304,7 +304,7 @@ export default function CadastroTutor() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="numAnimais" className="text-slate-700">
+            <label htmlFor="numAnimais" className="text-slate-700 w-fit">
               Número de Animais *
             </label>
             <input
@@ -322,7 +322,24 @@ export default function CadastroTutor() {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="descricao" className="text-slate-700">
+            <label htmlFor="email" className="text-slate-700 w-fit">
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              {...register("email")}
+              className={checkErrorInput(errors.email?.message)}
+            />
+            {errors.email && (
+              <span className="text-red-600 text-sm px-1">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="descricao" className="text-slate-700 w-fit">
               Descrição
             </label>
             <textarea

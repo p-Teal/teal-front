@@ -103,7 +103,7 @@ export default function Layout() {
           </div>
         </div>
       </div>
-      <div className="w-5/6 ml-[18%] p-4 pt-10">
+      <div className="w-5/6 ml-[18%] pl-4 pt-10 pr-8">
         <Outlet />
       </div>
       <Modal onClose={closeModal} isOpen={isOpen} title="LOGOUT">

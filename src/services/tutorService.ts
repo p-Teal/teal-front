@@ -40,3 +40,12 @@ export const getTutor = async (id: string) => {
     return error.response;
   }
 };
+
+export const updateTutor = async (id: string, tutor: any) => {
+  try {
+    const response = await service.put(`/updateTutor/${id}`, tutor);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

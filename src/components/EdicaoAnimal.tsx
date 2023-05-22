@@ -97,7 +97,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             Dados do Animal
           </h2>
           <div className="flex flex-col gap-1">
-            <label htmlFor="nome" className="text-slate-700">
+            <label htmlFor="nome" className="text-slate-700 w-fit">
               Nome *
             </label>
             <input
@@ -114,7 +114,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="apelido" className="text-slate-700">
+            <label htmlFor="apelido" className="text-slate-700 w-fit">
               Apelido *
             </label>
             <input
@@ -130,7 +130,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="raca" className="text-slate-700">
+            <label htmlFor="raca" className="text-slate-700 w-fit">
               Raça *
             </label>
             <input
@@ -146,7 +146,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="porte" className="text-slate-700">
+            <label htmlFor="porte" className="text-slate-700 w-fit">
               Porte *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
@@ -182,7 +182,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="status" className="text-slate-700">
+            <label htmlFor="status" className="text-slate-700 w-fit">
               Status *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
@@ -218,7 +218,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="descricao" className="text-slate-700">
+            <label htmlFor="descricao" className="text-slate-700 w-fit">
               Descrição
             </label>
             <textarea
@@ -241,7 +241,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
         <div className="flex flex-col flex-1 pt-2 gap-5">
           <h2 className="text-2xl font-medium text-slate-700">Dados Extras</h2>
           <div className="flex flex-col gap-1">
-            <label htmlFor="dataNascimento" className="text-slate-700">
+            <label htmlFor="dataNascimento" className="text-slate-700 w-fit">
               Data de Nascimento
             </label>
             <input
@@ -257,7 +257,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="dataEntrada" className="text-slate-700">
+            <label htmlFor="dataEntrada" className="text-slate-700 w-fit">
               Data de Entrada *
             </label>
             <input
@@ -273,8 +273,8 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-slate-700">Castrado</label>
-            <label className="inline-flex items-center mt-1">
+            <label className="text-slate-700 w-fit">Castrado</label>
+            <label className="inline-flex items-center mt-1 w-fit">
               <input
                 type="checkbox"
                 id="castrado"
@@ -285,7 +285,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             </label>
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="tipo" className="text-slate-700">
+            <label htmlFor="tipo" className="text-slate-700 w-fit">
               Tipo *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
@@ -322,7 +322,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="sexo" className="text-slate-700">
+            <label htmlFor="sexo" className="text-slate-700 w-fit">
               Sexo *
             </label>
             <div className="relative inline-block w-[320px] text-slate-700">
