@@ -11,6 +11,8 @@ import CadastroTutor from "./pages/CadastroTutor";
 import Tutores from "./pages/Tutores";
 import Animal from "./pages/Animal";
 import Tutor from "./pages/Tutor";
+import Adocoes from "./pages/Adocoes";
+import CadastroAdocao from "./pages/CadastroAdocao";
 
 function App() {
   return (
@@ -34,7 +36,10 @@ function App() {
             <Route path=":id" element={<Animal />} />
           </Route>
 
-          <Route path="adocoes" element={<h1>adocoes</h1>} />
+          <Route path="adocoes">
+            <Route index element={<Adocoes />} />
+            <Route path="novo" element={<CadastroAdocao />} />
+          </Route>
 
           <Route path="tutores">
             <Route index element={<Tutores />} />
