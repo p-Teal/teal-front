@@ -31,3 +31,12 @@ export const createAdocao = async (data: any) => {
     return error.response;
   }
 };
+
+export const getAdocoes = async () => {
+  try {
+    const response = await service.get("/getAdocoes");
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

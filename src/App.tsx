@@ -13,6 +13,7 @@ import Animal from "./pages/Animal";
 import Tutor from "./pages/Tutor";
 import Adocoes from "./pages/Adocoes";
 import CadastroAdocao from "./pages/CadastroAdocao";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
             </AuthProtect>
           }
         >
-          <Route index element={<h1>index</h1>} />
+          <Route index element={<Home />} />
 
           <Route path="voluntarios" element={<Voluntarios />} />
 
