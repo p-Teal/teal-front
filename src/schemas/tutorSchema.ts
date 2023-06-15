@@ -2,7 +2,10 @@ import { z } from "zod";
 import moment from "moment";
 
 const tutorSchema = z.object({
-  cpf: z.string().trim().min(11, 'CPF precisa ter 11 caracteres').max(11, 'CPF precisa ter 11 caracteres'),
+  cpf: z
+    .string()
+    .trim()
+    .regex(/^\d{11}$/, "CPF precisa ter 11 caracteres numéricos"),
   nome: z
     .string()
     .trim()

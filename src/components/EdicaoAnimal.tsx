@@ -105,6 +105,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
               id="nome"
               autoComplete="off"
               {...register("nome")}
+              disabled
               className={checkErrorInput(errors.nome?.message)}
             />
             {errors.nome && (
@@ -120,6 +121,7 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
             <input
               type="text"
               id="apelido"
+              disabled
               {...register("apelido")}
               className={checkErrorInput(errors.apelido?.message)}
             />
@@ -181,42 +183,44 @@ export default function EdicaoAnimal({ animalData, animalId }: Props) {
               </span>
             )}
           </div>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="status" className="text-slate-700 w-fit">
-              Status *
-            </label>
-            <div className="relative inline-block w-[320px] text-slate-700">
-              <select
-                id="status"
-                {...register("status")}
-                className={`${checkErrorInput(
-                  errors.status?.message
-                )} appearance-none pr-6`}
-                defaultValue=""
-              >
-                <option disabled value="">
-                  Selecione
-                </option>
-                <option value="disponível">Disponível</option>
-                <option value="em tratamento">Em Tratamento</option>
-                <option value="não disponível">Não Disponível</option>
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                  <path
-                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                    fillRule="evenodd"
-                  ></path>
-                </svg>
+          {animalData?.status !== "adotado" && (
+            <div className="flex flex-col gap-1">
+              <label htmlFor="status" className="text-slate-700 w-fit">
+                Status *
+              </label>
+              <div className="relative inline-block w-[320px] text-slate-700">
+                <select
+                  id="status"
+                  {...register("status")}
+                  className={`${checkErrorInput(
+                    errors.status?.message
+                  )} appearance-none pr-6`}
+                  defaultValue=""
+                >
+                  <option disabled value="">
+                    Selecione
+                  </option>
+                  <option value="disponível">Disponível</option>
+                  <option value="em tratamento">Em Tratamento</option>
+                  <option value="não disponível">Não Disponível</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                    <path
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                      fillRule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
               </div>
+              {errors.status && (
+                <span className="text-red-600 text-sm px-1">
+                  {errors.status.message}
+                </span>
+              )}
             </div>
-            {errors.status && (
-              <span className="text-red-600 text-sm px-1">
-                {errors.status.message}
-              </span>
-            )}
-          </div>
+          )}
           <div className="flex flex-col gap-1">
             <label htmlFor="descricao" className="text-slate-700 w-fit">
               Descrição

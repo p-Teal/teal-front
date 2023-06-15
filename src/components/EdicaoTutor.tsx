@@ -141,6 +141,7 @@ export default function EdicaoTutor({ tutorData, tutorId }: Props) {
             <input
               type="text"
               id="nome"
+              disabled
               {...register("nome")}
               className={checkErrorInput(errors.nome?.message)}
             />

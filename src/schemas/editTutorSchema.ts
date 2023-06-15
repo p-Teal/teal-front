@@ -5,8 +5,7 @@ const editTutorSchema = z.object({
   cpf: z
     .string()
     .trim()
-    .min(11, "CPF precisa ter 11 caracteres")
-    .max(11, "CPF precisa ter 11 caracteres"),
+    .regex(/^\d{11}$/, "CPF precisa ter 11 caracteres numéricos"),
   nome: z
     .string()
     .trim()

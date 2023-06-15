@@ -21,6 +21,8 @@ export default function CardTutor({ tutor }: CardProps) {
 
   const classNameCard = `mb-2 rounded-lg duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus} bg-slate-300 p-2 text-slate-700 flex flex-col gap-1`;
 
+  const tipoMoradia = tutor.tipoMoradia.charAt(0).toUpperCase() + tutor.tipoMoradia.slice(1);
+
   return (
     <NavLink
       key={tutor._id}
@@ -48,7 +50,7 @@ export default function CardTutor({ tutor }: CardProps) {
       <div className="flex flex-row items-center font-bold justify-evenly">
         <div className="flex flex-row">
           <HouseLine size={24} />
-          <p className="pl-2 pr-4">{tutor.tipoMoradia}</p>
+          <p className="pl-2 pr-4">{tipoMoradia}</p>
         </div>
         <div className="flex flex-row">
           <Person size={24} />
