@@ -15,7 +15,7 @@ import { useState } from "react";
 import { useAppContext } from "../context/appContext";
 
 export default function Layout() {
-  const { logoutContext } = useAppContext();
+  const { logoutContext, admin } = useAppContext();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -71,13 +71,15 @@ export default function Layout() {
             <HandHeart size={30} className="mx-2" />
             Doações
           </NavLink>
-          <NavLink
-            to="/voluntarios"
-            className={({ isActive }) => handleActive(isActive)}
-          >
-            <UsersThree size={30} className="mx-2" />
-            Voluntários
-          </NavLink>
+          {admin && (
+            <NavLink
+              to="/voluntarios"
+              className={({ isActive }) => handleActive(isActive)}
+            >
+              <UsersThree size={30} className="mx-2" />
+              Voluntários
+            </NavLink>
+          )}
         </div>
         <div className="flex flex-col items-center justify-center w-full">
           <NavLink
@@ -103,7 +105,7 @@ export default function Layout() {
           </div>
         </div>
       </div>
-      <div className="w-5/6 ml-[18%] pl-4 pt-10 pr-8">
+      <div className="w-5/6 ml-[18%] pl-4 pt-10 pr-8 mb-14">
         <Outlet />
       </div>
       <Modal onClose={closeModal} isOpen={isOpen} title="LOGOUT">

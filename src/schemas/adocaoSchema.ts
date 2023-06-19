@@ -25,6 +25,11 @@ const adocaoSchema = z.object({
       const dataNascimento = moment(`${ano}-${mes}-${dia}`, "YYYY-MM-DD");
       return dataNascimento.isBefore(dataAmanha, "day");
     }, "Data precisa ser anterior ou igual a data de hoje"),
+  observacao: z
+    .string()
+    .trim()
+    .min(2, "Observação precisa ter no mínimo 2 caracteres")
+    .max(200, "Observação precisa ter no máximo 200 caracteres"),
 });
 
 export default adocaoSchema;

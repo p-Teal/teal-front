@@ -9,6 +9,7 @@ import {
 import Modal from "../components/Modal";
 import { Plus, ReceiptX, TrashSimple } from "@phosphor-icons/react";
 import ModalDoacao from "../components/ModalDoacao";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface IDoacao {
   _id: string;
@@ -40,7 +41,7 @@ const circleIcon = (ativo: boolean) => {
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 export default function Doacoes() {
-  const { logoutContext } = useAppContext();
+  const { logoutContext, admin } = useAppContext();
   const [doacoes, setDoacoes] = useState<IDoacaoResponse>({
     doacoes: [],
     totalDoacoes: -1,
@@ -128,7 +129,7 @@ export default function Doacoes() {
         </button>
       </div>
 
-      {loading && <p>Carregando...</p>}
+      {loading && <LoadingSpinner />}
       {error && <p className="text-xl text-red-600">{error}</p>}
       {doacoes.totalDoacoes === 0 && (
         <p className="text-xl text-slate-700">Nenhuma doação cadastrada.</p>
@@ -154,9 +155,8 @@ export default function Doacoes() {
               <tbody>
                 {doacoes.doacoes.map((doacao, index) => (
                   <tr
-                    className={`flex flex-row justify-start py-3 px-8 text-left ${
-                      index % 2 === 0 ? "bg-slate-300" : "bg-slate-400"
-                    } hover:bg-teal-200 hover:cursor-pointer`}
+                    className={`flex flex-row justify-start py-3 px-8 text-left ${index % 2 === 0 ? "bg-slate-300" : "bg-slate-400"
+                      } hover:bg-teal-200 hover:cursor-pointer`}
                     key={doacao._id}
                     onClick={() => setOpenDoacao(doacao)}
                   >
@@ -191,27 +191,29 @@ export default function Doacoes() {
           {openDoacao && JSON.stringify(openDoacao, null, 2)}
         </pre>
 
-        <div className="flex flex-row-reverse items-center justify-between">
-          <button
-            className="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-700 flex flex-row items-center border-2 border-red-600 hover:border-red-700"
-            type="button"
-            onClick={() => removeDoacao(openDoacao?._id || "")}
-          >
-            Excluir
-            <TrashSimple size={20} className="ml-2" />
-          </button>
-
-          {openDoacao?.disponivel && (
+        {admin && (
+          <div className="flex flex-row-reverse items-center justify-between">
             <button
-              className="bg-white text-black px-4 py-2 rounded-md shadow-md flex flex-row items-center ml-2 border-red-600 border-2 hover:bg-red-50"
+              className="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-red-700 flex flex-row items-center border-2 border-red-600 hover:border-red-700"
               type="button"
-              onClick={() => handleDesativarDoacao(openDoacao?._id || "")}
+              onClick={() => removeDoacao(openDoacao?._id || "")}
             >
-              Cancelar doação
-              <ReceiptX size={20} className="ml-2" />
+              Excluir
+              <TrashSimple size={20} className="ml-2" />
             </button>
-          )}
-        </div>
+
+            {openDoacao?.disponivel && (
+              <button
+                className="bg-white text-black px-4 py-2 rounded-md shadow-md flex flex-row items-center ml-2 border-red-600 border-2 hover:bg-red-50"
+                type="button"
+                onClick={() => handleDesativarDoacao(openDoacao?._id || "")}
+              >
+                Cancelar doação
+                <ReceiptX size={20} className="ml-2" />
+              </button>
+            )}
+          </div>
+        )}
       </Modal>
 
       <ModalDoacao

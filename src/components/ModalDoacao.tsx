@@ -74,7 +74,6 @@ function ModalDoacao({ isOpen, onClose, fetchData }: ModalProps) {
 
     data.data = dataF;
 
-    console.log(data);
 
     const resp = await createDoacao(data);
 
@@ -97,7 +96,7 @@ function ModalDoacao({ isOpen, onClose, fetchData }: ModalProps) {
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
           <div
             ref={modalRef}
-            className="bg-white rounded-lg shadow-lg w-full max-w-sm sm:max-w-md max-h-screen overflow-y-auto"
+            className="bg-white rounded-lg shadow-lg w-full max-w-sm sm:max-w-md max-h-full overflow-y-auto"
           >
             <div
               className="border-b px-4 py-2 flex justify-between items-center">

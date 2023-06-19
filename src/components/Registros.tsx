@@ -6,6 +6,7 @@ import ChipRegistro from "./ChipRegistro";
 import ModalRegistro from "./ModalRegistro";
 import { deleteObject, ref } from "firebase/storage";
 import { storage } from "../utils/firebase";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface Props {
   animalId: string | undefined;
@@ -90,7 +91,7 @@ export function Registros({ animalId }: Props) {
       <div className="flex flex-row pt-2 pb-8 gap-5">
         <h2 className="text-2xl font-medium text-slate-700">Registros</h2>
       </div>
-      {loading && <p>Carregando...</p>}
+      {loading && <LoadingSpinner />}
       {error && <p className="text-xl text-red-600">{error}</p>}
       {registros.totalRegistros === 0 ? (
         <p className="text-xl text-slate-700">

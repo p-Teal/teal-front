@@ -3,6 +3,7 @@ import { useAppContext } from "../context/appContext";
 import { getStats } from "../services/statsService";
 import { useEffect, useState } from "react";
 import Charts from "../components/Charts";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
@@ -31,7 +32,6 @@ export default function Home() {
     const response = await getStats();
 
     if (response.status === 200) {
-      console.log(response.data);
       setStats(response.data);
     } else if (response.status === 401) {
       toast.error(sessionMessage);
@@ -56,7 +56,7 @@ export default function Home() {
       </div>
       <p className="text-xl text-slate-700 mb-8">Bem-vindo de volta, {voluntarioNome}.</p>
 
-      {loading && <p>Carregando...</p>}
+      {loading && <LoadingSpinner />}
       {error && <p className="text-xl text-red-600">{error}</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 text-slate-700">

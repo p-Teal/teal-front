@@ -206,6 +206,24 @@ export default function CadastroAdocao() {
               </span>
             )}
           </div>
+
+          <div className="flex flex-col gap-1">
+          <label htmlFor="observacao" className="text-slate-700 w-fit">
+              Observação
+            </label>
+            <textarea
+              id="observacao"
+              {...register("observacao")}
+              className={`${checkErrorInput(
+                errors.observacao?.message as string
+              )} min-h-[100px]`}
+            />
+            {errors.observacao && (
+              <span className="text-red-600 text-sm px-1">
+                {errors.observacao.message}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="xl:min-h-full bg-teal-500 w-1 rounded-lg mr-12"></div>

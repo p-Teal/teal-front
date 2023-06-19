@@ -3,8 +3,9 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import { getTutor } from "../services/tutorService";
+import { deleteTutor, getTutor } from "../services/tutorService";
 import EdicaoTutor from "../components/EdicaoTutor";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface TabProps {
   active: boolean;
@@ -28,7 +29,7 @@ const Tab = ({ active, onClick, children }: TabProps) => {
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 export default function Tutor() {
-  const { logoutContext } = useAppContext();
+  const { logoutContext, admin } = useAppContext();
   const param = useParams<{ id: string }>();
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -64,20 +65,55 @@ export default function Tutor() {
     }
   };
 
+  const apagarTutor = async () => {
+    if (param.id) {
+      const response = await deleteTutor(param.id);
+      if (response.status === 204) {
+        toast.success("Tutor apagado com sucesso!");
+        nav("/tutores");
+      } else if (response.status === 401) {
+        toast.error(sessionMessage);
+        return logoutContext();
+      } else {
+        toast.error(`Erro ao apagar tutor: ${response.data.mensagem}`);
+      }
+    } else {
+      nav("/tutores");
+    }
+  };
+
   useEffect(() => {
     getTutorData();
   }, []);
 
   const tabs = [
     {
-      label: "Editar Foto",
-      // content: <EditarFotoAnimal urlFoto={urlFoto} setUrl={setUrlFoto} />,
-    },
-    {
       label: "Editar Dados",
-      content: <EdicaoTutor tutorData={tutorData} tutorId={param.id}/>,
+      content: <EdicaoTutor tutorData={tutorData} tutorId={param.id} />,
     },
   ];
+
+  if (admin) {
+    tabs.push({
+      label: "Apagar Tutor",
+      content: <div>
+        <h1 className="text-2xl font-medium text-slate-700 pb-8">
+          Apagar Tutor
+        </h1>
+        <p className="text-slate-700 pb-8">
+          Tem certeza que deseja apagar o tutor? Essa ação não pode ser desfeita.
+        </p>
+        <button
+          className="px-4 py-2 font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none rounded-sm"
+          onClick={() => {
+            apagarTutor();
+          }}
+        >
+          Apagar
+        </button>
+      </div>
+    });
+  }
 
   return (
     <>
@@ -105,7 +141,7 @@ export default function Tutor() {
       </div>
       {tabs.map((tab, index) => (
         <div key={index} className={`${activeTab !== index ? "hidden" : ""}`}>
-          {loading ? <h1>Carregando...</h1> : tab.content}
+          {loading ? <LoadingSpinner /> : tab.content}
         </div>
       ))}
     </>

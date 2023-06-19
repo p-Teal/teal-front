@@ -14,6 +14,8 @@ import Tutor from "./pages/Tutor";
 import Adocoes from "./pages/Adocoes";
 import CadastroAdocao from "./pages/CadastroAdocao";
 import Home from "./pages/Home";
+import Sobre from "./pages/Sobre";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -48,7 +50,7 @@ function App() {
             <Route path=":id" element={<Tutor />} />
           </Route>
 
-          <Route path="sobre" element={<h1>sobre</h1>} />
+          <Route path="sobre" element={<Sobre />} />
 
           <Route path="perfil" element={<h1>perfil</h1>} />
 
@@ -56,7 +58,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroVoluntario />} />
-        <Route path="*" element={<h1>404</h1>} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

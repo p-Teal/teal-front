@@ -40,3 +40,21 @@ export const getAdocoes = async () => {
     return error.response;
   }
 };
+
+export const cancelarAdocao = async (id: string) => {
+  try {
+    const response = await service.put(`/cancelarAdocao/${id}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};
+
+export const deleteAdocao = async (id: string) => {
+  try {
+    const response = await service.delete(`/apagarAdocao/${id}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

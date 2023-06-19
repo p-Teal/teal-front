@@ -14,8 +14,8 @@ const tutorSchema = z.object({
   telefone: z
     .string()
     .trim()
-    .min(2, "Telefone precisa ter no mínimo 10 caracteres")
-    .max(20, "Telefone precisa ter no máximo 11 caracteres"),
+    .min(10, "Telefone precisa ter no mínimo 10 caracteres")
+    .max(11, "Telefone precisa ter no máximo 11 caracteres"),
   email: z
     .optional(
       z.string().trim().email("Email precisa ser válido")

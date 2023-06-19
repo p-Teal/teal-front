@@ -10,6 +10,7 @@ import {
 import { IRegistro } from "./Registros";
 import { useState } from "react";
 import Modal from "./Modal";
+import { useAppContext } from "../context/appContext";
 
 interface Props {
   registro: IRegistro;
@@ -27,6 +28,7 @@ export default function ChipRegistro({
   registro,
   deleteRegistroFunction,
 }: Props) {
+  const { admin } = useAppContext();
   const [expand, setExpand] = useState(false);
   const [isOpenDelete, setIsOpenDelete] = useState(false);
 
@@ -58,7 +60,6 @@ export default function ChipRegistro({
   }
 
   function observacaoHandler(ob: string) {
-    console.log(ob);
     const newText = ob.replace(/\n/g, "<br />");
     return newText;
   }
@@ -106,13 +107,15 @@ export default function ChipRegistro({
               </a>
             </p>
           )}
-          <button
-            type="button"
-            onClick={() => openModal()}
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded w-full my-4"
-          >
-            Deletar
-          </button>
+          {admin && (
+            <button
+              type="button"
+              onClick={() => openModal()}
+              className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded w-full my-4"
+            >
+              Deletar
+            </button>
+          )}
         </div>
       )}
 

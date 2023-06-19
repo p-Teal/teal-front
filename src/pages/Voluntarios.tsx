@@ -11,6 +11,8 @@ import { CheckCircle, Info, Prohibit, Trash } from "@phosphor-icons/react";
 import Modal from "../components/Modal";
 import { cpfMask } from "../utils/cpfmask";
 import { useAppContext } from "../context/appContext";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { Navigate } from "react-router-dom";
 
 interface Voluntario {
   _id: string;
@@ -39,7 +41,7 @@ const circleIcon = (ativo: boolean) => {
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 export default function Voluntarios() {
-  const { logoutContext } = useAppContext();
+  const { logoutContext, admin } = useAppContext();
   const [voluntarios, setVoluntarios] = useState<IVoluntarioResponse>({
     voluntarios: [],
     totalVoluntarios: -1,
@@ -161,11 +163,15 @@ export default function Voluntarios() {
     getVoluntariosData();
   }, []);
 
+  if (!admin) {
+    return <Navigate to="/" />
+  }
+
   return (
     <>
       <h1 className="text-5xl font-medium pb-8 text-slate-700">Voluntários</h1>
 
-      {loading && <p>Carregando...</p>}
+      {loading && <LoadingSpinner />}
       {error && <p className="text-xl text-red-600">{error}</p>}
       {voluntarios.totalVoluntarios === 0 && (
         <p className="text-xl text-slate-700">Nenhum voluntário cadastrado.</p>

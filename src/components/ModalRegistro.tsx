@@ -94,7 +94,6 @@ export default function ModalRegistro({
 
     dataToSend.data = dataFormatted;
 
-    console.log(dataToSend);
 
     if (dataToSend.anexo.length === 0) {
       delete dataToSend.anexo;
@@ -104,7 +103,6 @@ export default function ModalRegistro({
       const imageRef = ref(storage, `Outros/${animalId}/${uuidValue}`);
       const firebaseReturn = await uploadBytes(imageRef, file);
       const url = await getDownloadURL(firebaseReturn.ref);
-      console.log(ext);
       if (ext !== "pdf" && ext !== "png" && ext !== "jpg" && ext !== "jpeg") {
         toast.error(
           "Formato de arquivo inválido! Os formatos aceitos são: pdf, png, jpg e jpeg."
@@ -114,7 +112,6 @@ export default function ModalRegistro({
       const anexoC = `${url}.${ext}`;
       dataToSend.anexo = anexoC;
     }
-    console.log(dataToSend);
     const resp = await createRegistro(dataToSend);
 
     if (resp.status === 201) {

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import EdicaoAnimal from "../components/EdicaoAnimal";
 import EditarFotoAnimal from "../components/EditarFotoAnimal";
 import { Registros } from "../components/Registros";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 interface TabProps {
   active: boolean;
@@ -30,7 +31,7 @@ const Tab = ({ active, onClick, children }: TabProps) => {
 const sessionMessage = "Sessão expirada, faça login novamente para continuar.";
 
 export default function Animal() {
-  const { logoutContext } = useAppContext();
+  const { logoutContext, admin } = useAppContext();
   const param = useParams<{ id: string }>();
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -60,7 +61,6 @@ export default function Animal() {
         }
         setAnimalData(response.data.animal);
         setUrlFoto(response.data.animal.urlFoto);
-        console.log(response.data);
       } else if (response.status === 401) {
         toast.error(sessionMessage);
         return logoutContext();
@@ -92,6 +92,28 @@ export default function Animal() {
     },
   ];
 
+  if (admin) {
+    tabs.push({
+      label: "Apagar Animal",
+      content: <div>
+        <h1 className="text-2xl font-medium text-slate-700 pb-8">
+          Apagar Animal
+        </h1>
+        <p className="text-slate-700 pb-8">
+          Tem certeza que deseja apagar o animal?
+        </p>
+        <button
+          className="px-4 py-2 font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none rounded-sm"
+          onClick={() => {
+            nav("/animais");
+          }}
+        >
+          Apagar
+        </button>
+      </div>
+    })
+  }
+
   return (
     <>
       <h1 className="sm:text-5xl text-2xl font-medium text-slate-700 pb-8">
@@ -118,7 +140,7 @@ export default function Animal() {
       </div>
       {tabs.map((tab, index) => (
         <div key={index} className={`${activeTab !== index ? "hidden" : ""}`}>
-          {loading ? <h1>Carregando...</h1> : tab.content}
+          {loading ? <LoadingSpinner /> : tab.content}
         </div>
       ))}
     </>

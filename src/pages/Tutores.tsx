@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Plus } from "@phosphor-icons/react";
 import { NavLink } from "react-router-dom";
 import CardTutor from "../components/CardTutor";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export interface ITutor {
   _id: string;
@@ -75,7 +76,7 @@ export default function Tutores() {
         </NavLink>
       </div>
 
-      {loading && <p>Carregando...</p>}
+      {loading && <LoadingSpinner />}
       {error && <p className="text-xl text-red-600">{error}</p>}
       {tutores.totalTutores === 0 && (
         <p className="text-xl text-slate-700">Nenhum tutor cadastrado.</p>
