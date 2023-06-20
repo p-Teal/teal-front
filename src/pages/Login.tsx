@@ -88,7 +88,7 @@ export default function Login() {
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="rounded hover:shadow-xl bg-white p-8 mt-14 max-w-sm border-y-4 border-teal-500">
         <div className="w-full mb-8">
-          <img src="/src/assets/Logo.svg" alt="Logo" className="mx-auto" />
+          <img src="/Logo.svg" alt="Logo" className="mx-auto" />
         </div>
         <h1 className="text-4xl text-center mb-8 text-slate-700">Login</h1>
         <form
