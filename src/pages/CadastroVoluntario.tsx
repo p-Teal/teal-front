@@ -133,7 +133,7 @@ export default function CadastroVoluntario() {
         </form>
         <NavLink to="/login" className="text-right">
           <p className="text-slate-500 hover:text-slate-700 text-sm">
-            Já possuí cadastro? Logar
+            Já possuí cadastro? Logar.
           </p>
         </NavLink>
       </div>
