@@ -49,3 +49,12 @@ export const updateAnimal = async (id: string, animal: any) => {
     return error.response;
   }
 };
+
+export const deleteAnimal = async (id: string) => {
+  try {
+    const response = await service.delete(`/deleteAnimal/${id}`);
+    return response;
+  } catch (error: any) {
+    return error.response;
+  }
+};

@@ -112,7 +112,8 @@ export default function Adocoes() {
 
   function observacaoHandler(ob: string) {
     const newText = ob.replace(/\n/g, "<br />");
-    return newText;
+    const p = `<b>Observação: </b> ${newText}`;
+    return p;
   }
 
   return (
@@ -222,11 +223,10 @@ export default function Adocoes() {
 
             {openAdocao.observacao && (
               <p
-                className="text-white"
                 dangerouslySetInnerHTML={{
                   __html: observacaoHandler(openAdocao.observacao),
                 }}
-              ><b>Observação: </b></p>
+              ></p>
             )}
             <p>
               <b>Doação ID: </b> {openAdocao._id}

@@ -13,9 +13,12 @@ import { NavLink, Outlet } from "react-router-dom";
 import Modal from "./Modal";
 import { useState } from "react";
 import { useAppContext } from "../context/appContext";
+import { useMediaQuery } from "../utils/hooks/useMediaQuery";
 
 export default function Layout() {
   const { logoutContext, admin } = useAppContext();
+
+  const mediaQ = useMediaQuery('(min-width: 1200px)');
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,6 +35,93 @@ export default function Layout() {
       return "w-full flex flex-row items-center bg-teal-400 p-2";
     }
     return "w-full flex flex-row items-center hover:bg-teal-200 p-2";
+  }
+
+  if (!mediaQ) {
+    return (
+      <main className="min-h-screen flex flex-row w-full">
+      <div className="w-[80px] bg-white p-2 flex flex-col justify-between h-full fixed overflow-auto shadow-lg">
+        <div>
+          <img src="/Duck.svg" alt="Logo" className="mx-auto mb-8" />
+          <NavLink to="/" className={({ isActive }) => handleActive(isActive)}>
+            <House size={30} className="mx-2" />
+          </NavLink>
+          <NavLink
+            to="/animais"
+            className={({ isActive }) => handleActive(isActive)}
+          >
+            <PawPrint size={30} className="mx-2" />
+          </NavLink>
+          <NavLink
+            to="/tutores"
+            className={({ isActive }) => handleActive(isActive)}
+          >
+            <Shield size={30} className="mx-2" />
+          </NavLink>
+          <NavLink
+            to="/adocoes"
+            className={({ isActive }) => handleActive(isActive)}
+          >
+            <Heart size={30} className="mx-2" />
+          </NavLink>
+          <NavLink
+            to="/doacoes"
+            className={({ isActive }) => handleActive(isActive)}
+          >
+            <HandHeart size={30} className="mx-2" />
+          </NavLink>
+          {admin && (
+            <NavLink
+              to="/voluntarios"
+              className={({ isActive }) => handleActive(isActive)}
+            >
+              <UsersThree size={30} className="mx-2" />
+            </NavLink>
+          )}
+        </div>
+        <div className="flex flex-col items-center justify-center w-full">
+          <NavLink
+            to="/perfil"
+            className={({ isActive }) => handleActive(isActive)}
+          >
+            <UserCircleGear size={30} className="mx-2" />
+          </NavLink>
+          <NavLink
+            to="/sobre"
+            className={({ isActive }) => handleActive(isActive)}
+          >
+            <Question size={30} className="mx-2" />
+          </NavLink>
+          <div
+            className="w-full flex flex-row items-center hover:bg-red-600 hover:text-white p-2 cursor-pointer"
+            onClick={openModal}
+          >
+            <SignOut size={30} className="mx-2" />
+          </div>
+        </div>
+      </div>
+      <div className="w-5/6 ml-[90px] pl-4 pt-10 pr-8 mb-14">
+        <Outlet />
+      </div>
+      <Modal onClose={closeModal} isOpen={isOpen} title="LOGOUT">
+        <p className="text-center py-3">Deseja realmente sair?</p>
+        <div className="flex flex-row justify-center pt-3">
+          <button
+            className="bg-teal-500 text-white rounded-lg px-6 py-2 mx-2 hover:bg-teal-600"
+            onClick={logoutContext}
+          >
+            Sim
+          </button>
+          <button
+            className="border-2 border-teal-500 text-teal-500 rounded-lg px-6 py-2 mx-2 hover:font-bold"
+            onClick={closeModal}
+          >
+            Não
+          </button>
+        </div>
+      </Modal>
+    </main>
+    )
   }
 
   return (

@@ -16,6 +16,7 @@ import CadastroAdocao from "./pages/CadastroAdocao";
 import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import NotFoundPage from "./pages/NotFoundPage";
+import Perfil from "./pages/Perfil";
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
 
           <Route path="sobre" element={<Sobre />} />
 
-          <Route path="perfil" element={<h1>perfil</h1>} />
+          <Route path="perfil" element={<Perfil />} />
 
           <Route path="doacoes" element={<Doacoes />} />
         </Route>

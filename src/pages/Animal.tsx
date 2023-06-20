@@ -1,13 +1,15 @@
 import { ArrowLeft } from "@phosphor-icons/react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useAppContext } from "../context/appContext";
-import { getAnimal } from "../services/animalService";
+import { deleteAnimal, getAnimal } from "../services/animalService";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import EdicaoAnimal from "../components/EdicaoAnimal";
 import EditarFotoAnimal from "../components/EditarFotoAnimal";
 import { Registros } from "../components/Registros";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { deleteObject, listAll, ref } from "firebase/storage";
+import { storage } from "../utils/firebase";
 
 interface TabProps {
   active: boolean;
@@ -77,6 +79,44 @@ export default function Animal() {
     getAnimalData();
   }, []);
 
+
+  const deleteFirebaseObjects = async () => {
+    if (param.id) {
+      const imageRef = ref(storage, `Animais/${param.id}`);
+      await deleteObject(imageRef);
+
+      const folderRef = ref(storage, `Outros/${param.id}`);
+      const folder = await listAll(folderRef);
+
+      const deletePromises = folder.items.map((item) => deleteObject(item));
+
+      await Promise.all(deletePromises);
+
+      // await deleteObject(folderRef);
+    } else {
+      nav("/animais");
+    }
+  }
+
+
+  const handleDeleteAnimal = async () => {
+    if (param.id) {
+      const response = await deleteAnimal(param.id);
+      if (response.status === 204) {
+        await deleteFirebaseObjects();
+        toast.success("Animal e todos os registros associados apagados com sucesso!");
+        nav("/animais");
+      } else if (response.status === 401) {
+        toast.error(sessionMessage);
+        return logoutContext();
+      } else {
+        toast.error(`Erro ao apagar animal: ${response.data.mensagem}`);
+      }
+    } else {
+      nav("/animais");
+    }
+  }
+
   const tabs = [
     {
       label: "Editar Foto",
@@ -100,12 +140,12 @@ export default function Animal() {
           Apagar Animal
         </h1>
         <p className="text-slate-700 pb-8">
-          Tem certeza que deseja apagar o animal?
+          Tem certeza que deseja apagar o animal? Apagar o animal irá apagar todos os registros relacionados a ele e também as adoções.
         </p>
         <button
           className="px-4 py-2 font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none rounded-sm"
           onClick={() => {
-            nav("/animais");
+            handleDeleteAnimal();
           }}
         >
           Apagar
