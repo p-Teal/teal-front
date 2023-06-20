@@ -11,15 +11,15 @@ export default function CardTutor({ tutor }: CardProps) {
   let tutorStatus = tutor.status;
   let colorStatus;
   if (tutorStatus === "aprovado") {
-    colorStatus = "border-2 border-teal-600";
+    colorStatus = "bg-teal-200/[0.2]";
   } else if (tutorStatus === "reprovado") {
-    colorStatus = "border-2 border-red-600";
+    colorStatus = "bg-red-200/[0.3]";
   } else {
-    colorStatus = "border-2 border-slate-400";
+    colorStatus = "bg-slate-300";
   }
   tutorStatus = tutorStatus.charAt(0).toUpperCase() + tutorStatus.slice(1);
 
-  const classNameCard = `mb-2 rounded-lg duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus} bg-slate-300 p-2 text-slate-700 flex flex-col gap-1`;
+  const classNameCard = `mb-2 rounded-lg duration-300 hover:-translate-y-1 cursor-pointer ${colorStatus} p-2 text-slate-700 flex flex-col gap-1`;
 
   const tipoMoradia = tutor.tipoMoradia.charAt(0).toUpperCase() + tutor.tipoMoradia.slice(1);
 
